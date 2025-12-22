@@ -3,11 +3,13 @@ from django.db import models
 from django.utils import timezone
 from datetime import timedelta
 
+
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
 
     profile_image = models.ImageField(upload_to='profiles/', blank=True, null=True)
     phone = models.CharField(max_length=15, blank=True)
+
     address_line1 = models.CharField(max_length=255, blank=True)
     address_line2 = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=100, blank=True)
@@ -20,11 +22,9 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
+
 class EmailOTP(models.Model):
-    user = models.ForeignKey(
-        CustomUser,
-        on_delete=models.CASCADE
-    )
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     otp = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
     is_verified = models.BooleanField(default=False)
