@@ -1,0 +1,26 @@
+{% load static %}
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h2>Login</h2>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <button type="submit">Login</button>
+    </form>
+
+    <p>
+        Don't have an account? <a href="{% url 'accounts:signup' %}">Sign up</a><br>
+        Forgot password? <a href="{% url 'accounts:forgot_password' %}">Click here</a>
+    </p>
+</body>
+</html>
