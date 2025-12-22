@@ -1,6 +1,7 @@
 # accounts/forms.py
 from django import forms
 from .models import CustomUser
+from django.contrib.auth.forms import UserCreationForm
 
 class SignupForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label="Password")
@@ -44,3 +45,63 @@ class SignupForm(forms.ModelForm):
 
         if password != confirm_password:
             self.add_error('confirm_password', 'Passwords do not match.')
+
+class CustomUserCreationForm(UserCreationForm):
+    username = forms.CharField(
+        max_length=150,
+        help_text="",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your username'
+        })
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your email'
+        })
+    )
+    profile_image = forms.ImageField(required=False)
+    phone = forms.CharField(
+        max_length=15,
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Phone number'})
+    )
+    address_line1 = forms.CharField(
+        max_length=255,
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Address line 1'})
+    )
+    address_line2 = forms.CharField(
+        max_length=255,
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Address line 2'})
+    )
+    city = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'City'})
+    )
+    state = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'State'})
+    )
+    postal_code = forms.CharField(
+        max_length=20,
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Postal Code'})
+    )
+    country = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Country'})
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = [
+            'username', 'email', 'profile_image', 'phone', 'address_line1',
+            'address_line2', 'city', 'state', 'postal_code', 'country',
+            'password1', 'password2'
+        ]

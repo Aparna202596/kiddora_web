@@ -5,6 +5,7 @@ from .models import EmailOTP, CustomUser
 from .utils import generate_otp, send_otp_email
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
+from .forms import CustomUserCreationForm
 
 def home(request):
     return render(request, 'accounts/home.html')
@@ -23,15 +24,12 @@ def login_view(request):
 
 def signup(request):
     if request.method == 'POST':
-        form = SignupForm(request.POST)
+        form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
-            user.save()
-            return redirect('accounts:home')
+            form.save()
+            return redirect('accounts:login')
     else:
-        form = SignupForm()
-
+        form = CustomUserCreationForm()
     return render(request, 'accounts/signup.html', {'form': form})
 
 def logout_view(request):
