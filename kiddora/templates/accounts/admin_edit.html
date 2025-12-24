@@ -1,0 +1,31 @@
+{% extends 'accounts/base.html' %}
+{% block title %}Edit User - Kiddora{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow p-4">
+            <h3 class="text-center mb-4" style="color:#ff66aa;">Edit User</h3>
+
+            {% if error %}<p class="error">{{ error }}</p>{% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" value="{{ user.username }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{ user.email }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password (leave blank to keep unchanged)</label>
+                    <input type="password" name="password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-warning w-100">Update User</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

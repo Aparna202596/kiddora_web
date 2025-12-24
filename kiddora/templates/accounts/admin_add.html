@@ -1,0 +1,37 @@
+{% extends 'accounts/base.html' %}
+{% block title %}Add User - Kiddora{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow p-4">
+            <h3 class="text-center mb-4" style="color:#ff66aa;">Add New User</h3>
+
+            {% if error %}<p class="error">{{ error }}</p>{% endif %}
+            {% if success %}<p class="success">{{ success }}</p>{% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" name="c_password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success w-100">Add User</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

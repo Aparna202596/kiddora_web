@@ -1,0 +1,48 @@
+{% extends 'accounts/base.html' %}
+{% block title %}Admin Panel - Kiddora{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mt-4 mb-3">
+    <h2 style="color:#ff66aa;">Admin Panel</h2>
+    <a href="{% url 'accounts:admin_add' %}" class="btn btn-success">Add User</a>
+</div>
+
+<form method="GET" class="mb-3">
+    <input type="text" name="q" class="form-control w-25 d-inline" placeholder="Search username" value="{{ query }}">
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<table class="table table-bordered table-hover" style="background:#fff0f5; border-radius:15px;">
+    <thead style="background:#ff99cc;">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Blocked</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.is_blocked|yesno:"Yes,No" }}</td>
+            <td>
+                <a href="{% url 'accounts:admin_edit' user.id %}" class="btn btn-sm btn-primary">Edit</a>
+                <form action="{% url 'accounts:admin_delete' user.id %}" method="POST" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                </form>
+                <a href="{% url 'accounts:toggle_block' user.id %}" class="btn btn-sm btn-warning">
+                    {% if user.is_blocked %}Unblock{% else %}Block{% endif %}
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="text-center">No users found</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

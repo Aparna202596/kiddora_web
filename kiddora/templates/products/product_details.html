@@ -1,0 +1,117 @@
+<select id="variant">
+  {% for v in variants %}
+    <option value="{{ v.id }}">
+      {{ v.size }} / {{ v.color }} — ₹{{ v.price }} (Stock: {{ v.stock }})
+    </option>
+  {% endfor %}
+</select>
+
+<input type="number" id="qty" value="1" min="1">
+
+<button onclick="addToCart()">Add to Cart</button>
+<button onclick="toggleWishlist({{ product.id }})">
+  ❤️ Wishlist
+</button>
+
+<script>
+function addToCart() { 
+  const variantId = document.getElementById('variant').value;
+  const quantity = document.getElementById('qty').value;
+
+  fetch('/cart/add/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': '{{ csrf_token }}'
+    },
+    body: JSON.stringify({
+      product_id: {{ product.id }},
+      variant_id: variantId,
+      quantity: quantity
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    alert('Added to cart!');
+  });
+}
+function toggleWishlist(productId) {
+  fetch('/wishlist/toggle/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': '{{ csrf_token }}'
+    },
+    body: JSON.stringify({ product_id: productId })
+  })
+  .then(response => response.json())
+  .then(data => {
+    alert(data.message);
+  });
+}
+</script>
+<h2>Reviews</h2>
+<div id="reviews">
+    {% for review in reviews %}
+        <div class="review">
+        <strong>{{ review.user.username }}</strong> - 
+        <em>{{ review.rating }} / 5</em>
+        <p>{{ review.comment }}</p>
+        <small>{{ review.created_at }}</small>
+        </div>
+    {% empty %}
+        <p>No reviews yet.</p>
+    {% endfor %}
+</div>
+<h3>Add a Review</h3>
+<form method="post" action="{% url 'add_review' product.id %}">
+    {% csrf_token %}
+    <label for="rating">Rating:</label>
+    <select name="rating" id="rating" required>
+        {% for i in "12345" %}
+            <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <label for="comment">Comment:</label><br>
+    <textarea name="comment" id="comment" rows="4" cols="50" required></textarea><br>
+    <button type="submit">Submit Review</button>
+</form>
+<style>
+.review {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+#reviews {
+    max-width: 600px;
+}
+
+
+form {
+    margin-top: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+textarea {
+    width: 100%;
+}
+
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #45a049;
+}
+select, input[type="number"] {
+    padding: 5px;
+    margin: 5px 0;
+}
+</style>

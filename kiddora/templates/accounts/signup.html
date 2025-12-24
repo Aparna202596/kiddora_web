@@ -1,75 +1,10 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
-    <style>
-        body {
-            background: url("{% static 'images/kiddora loading page.PNG' %}") no-repeat center center fixed;
-            font-family: 'Arial', sans-serif;
-            background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
+{% extends 'accounts/base.html' %}
+{% block content %}
+<h2>Create Account</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button>Create</button>
+</form>
+{% endblock %}
 
-        .signup-container {
-            width: 600px;
-            margin: 50px auto;
-            padding: 30px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
-        }
-
-        .signup-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .signup-container label {
-            display: block;
-            margin: 10px 0 5px;
-            color: #555;
-        }
-
-        .signup-container input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .signup-container button {
-            width: 100%;
-            padding: 12px;
-            background-color: #ff4081;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .signup-container button:hover {
-            background-color: #e91e63;
-        }
-    </style>
-</head>
-<body>
-    <div class="signup-container">
-        <h2>Sign Up</h2>
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Sign Up</button>
-        </form>
-    </div>
-</body>
-</html>

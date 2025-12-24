@@ -1,0 +1,15 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kiddora</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="container">
+    <h1 class="logo">🌈 Kiddora</h1>
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>
+

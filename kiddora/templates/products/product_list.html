@@ -1,0 +1,24 @@
+{% for product in products %}
+<div class="product-card">
+    <img src="{{ product.images.first.image.url }}">
+    <h4>{{ product.name }}</h4>
+    <p>₹{{ product.price }}</p>
+    <a href="{% url 'product_detail' product.slug %}">View</a>
+</div>
+{% endfor %}
+<!-- Image Gallery -->
+{% for image in product.images.all %}
+<img src="{{ image.image.url }}">
+{% endfor %}
+
+<!-- Variant Selection -->
+<select id="variant">
+{% for v in product.variants.all %}
+<option value="{{ v.id }}">
+    {{ v.size }} - {{ v.color }} ({{ v.stock }} left)
+</option>
+{% endfor %}
+</select>
+
+<button onclick="addToCart()">Add to Cart</button>
+<script src="{% static 'js/cart.js' %}"></script>
