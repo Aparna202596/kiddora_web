@@ -11,7 +11,7 @@ class CustomUser(AbstractUser):
     ROLE_CHOICES = (
         (ROLE_ADMIN, 'Admin'),
         (ROLE_CUSTOMER, 'Customer'),)
-    full_name = models.CharField(max_length=100)
+    full_name = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20, unique=True, null=True, blank=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default=ROLE_CUSTOMER, db_index=True)

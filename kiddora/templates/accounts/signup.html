@@ -13,14 +13,11 @@
         <div class="auth-left">
             <h2>Create Account</h2>
 
-            <a href="{% url 'socialaccount_login' 'google' %}" class="google-btn">
-                <img src="{% static 'images/google.png' %}"> Signup with Google
-            </a>
-
             <div class="divider">or</div>
 
             <form method="post">
                 {% csrf_token %}
+                <input type="username" name="full_name" placeholder="Username" required>
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>
                 <input type="password" name="confirm_password" placeholder="Confirm Password" required>

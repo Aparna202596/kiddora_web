@@ -21,13 +21,11 @@ from django.urls import path, include
 from django.shortcuts import redirect
 
 urlpatterns = [
+    path('', lambda request: redirect('accounts:login')),  # ROOT FIX
+    path('accounts/', include('accounts.urls')),
+    path('products/', include('products.urls')),
+    path('admin/dashboard/', include('core.urls')),
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),  # placeholder
-    path('products/', include('products.urls')),  # placeholder
-    path('', include('core.urls')),  # placeholder
-    path('accounts/', include('allauth.urls')),  # login/signup/social auth
-    # Redirect root URL to home view in accounts app (or any app you want)
-    path('', lambda request: redirect('accounts:home')),  # assuming you have a 'home' view
 ]
 
 if settings.DEBUG:
