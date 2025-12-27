@@ -1,46 +1,81 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Dashboard</title>
-    <style>
-        body { font-family: Arial; background: #f4f6f8; }
-        .container { padding: 30px; }
-        .card {
-            background: white;
-            padding: 20px;
-            margin: 10px;
-            display: inline-block;
-            width: 220px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-        h2 { margin-bottom: 20px; }
-    </style>
-</head>
-<body>
+{% extends " base_admin.html" %}
+{% load static %}
 
-<div class="container">
-    <h2>Admin Dashboard</h2>
+{% block title %}Admin Dashboard | Kiddora{% endblock %}
 
-    <div class="card">
-        <h3>Total Users</h3>
-        <p>{{ total_users }}</p>
+{% block content %}
+<div class="dashboard-container">
+
+    <!-- TODAY SALES CARDS -->
+    <h2 class="dashboard-title">Today's Sales</h2>
+
+    <div class="stats-grid">
+
+        <div class="stat-card pink">
+            <div class="stat-icon">💰</div>
+            <h3>${{ total_sales }}</h3>
+            <p>Total Sales</p>
+            <small>+8% from yesterday</small>
+        </div>
+
+        <div class="stat-card yellow">
+            <div class="stat-icon">🧾</div>
+            <h3>{{ total_orders }}</h3>
+            <p>Total Orders</p>
+            <small>+5% from yesterday</small>
+        </div>
+
+        <div class="stat-card green">
+            <div class="stat-icon">📦</div>
+            <h3>{{ products_sold }}</h3>
+            <p>Products Sold</p>
+            <small>+6% from yesterday</small>
+        </div>
+
+        <div class="stat-card purple">
+            <div class="stat-icon">👤</div>
+            <h3>{{ new_customers }}</h3>
+            <p>New Customers</p>
+            <small>+10% from yesterday</small>
+        </div>
+
     </div>
 
-    <div class="card">
-        <h3>Active Users</h3>
-        <p>{{ active_users }}</p>
+    <!-- CHARTS SECTION -->
+    <div class="charts-grid">
+
+        <!-- DONUT CHARTS -->
+        <div class="chart-card">
+            <h4>Total Order</h4>
+            <div class="donut red">81%</div>
+        </div>
+
+        <div class="chart-card">
+            <h4>Customer Growth</h4>
+            <div class="donut green">22%</div>
+        </div>
+
+        <div class="chart-card">
+            <h4>Total Revenue</h4>
+            <div class="donut blue">62%</div>
+        </div>
+
+        <!-- PRODUCT SOLD GRAPH -->
+        <div class="chart-wide">
+            <div class="chart-header">
+                <h4>Product Sold</h4>
+                <button class="btn-outline">Save Report</button>
+            </div>
+            <img src="{% static 'admin/images/product_sold_graph.png' %}" alt="Product Sold Graph">
+        </div>
+
     </div>
 
-    <div class="card">
-        <h3>Total Products</h3>
-        <p>{{ total_products }}</p>
+    <!-- TOTAL REVENUE GRAPH -->
+    <div class="chart-large">
+        <h4>Total Revenue</h4>
+        <img src="{% static 'admin/images/total_revenue_graph.png' %}" alt="Revenue Graph">
     </div>
 
-    <div class="card">
-        <h3>Total Orders</h3>
-        <p>{{ total_orders }}</p>
-    </div>
 </div>
-
-</body>
-</html>
+{% endblock %}
