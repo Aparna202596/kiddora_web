@@ -1,0 +1,25 @@
+{% extends "base_user.html" %}
+{% block title %}{{ category.category_name }} | Kiddora{% endblock %}
+
+{% block content %}
+<section class="product-listing">
+
+    <h2>{{ category.category_name }}</h2>
+
+    <div class="product-grid">
+        {% for product in products %}
+            <div class="product-card">
+                <a href="{% url 'store:product_detail' product.slug %}">
+                    <h3>{{ product.product_name }}</h3>
+                </a>
+                <p>{{ product.final_price }}</p>
+            </div>
+        {% empty %}
+            <p class="empty-state">No products available in this category.</p>
+        {% endfor %}
+    </div>
+
+    {% include "partials/pagination.html" with page_obj=products %}
+</section>
+{% endblock %}
+

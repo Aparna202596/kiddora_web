@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>{{ product.name }}</h3>
+
+<div class="row">
+  {% for img in images %}
+    <div class="col-md-3">
+      <img src="{{ img.image.url }}" class="img-fluid">
+    </div>
+  {% endfor %}
+</div>
+
+<p>{{ product.description }}</p>
+<h4>₹{{ product.price }}</h4>
+
+<select id="variant">
+  {% for v in variants %}
+    <option value="{{ v.id }}">
+      {{ v.size }} / {{ v.color }} ({{ v.stock }} left)
+    </option>
+  {% endfor %}
+</select>
+
+<button id="add-to-cart" class="btn btn-primary">Add to Cart</button>
+
+<hr>
+<h5>Reviews ({{ avg_rating|default:0 }}/5)</h5>
+
+{% for r in reviews %}
+  <p><strong>{{ r.user.username }}</strong>: {{ r.rating }}/5</p>
+  <p>{{ r.comment }}</p>
+{% endfor %}
+
+{% endblock %}

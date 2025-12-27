@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Profile</title>
+</head>
+<body>
+
+<h2>Edit Profile</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <input type="text" name="full_name" value="{{ user_obj.full_name }}" required>
+    <input type="text" name="phone" value="{{ user_obj.phone }}">
+    <input type="file" name="profile_image">
+
+    <button type="submit">Save Changes</button>
+</form>
+
+</body>
+</html>
+

@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Profile | Kiddora</title>
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+</head>
+<body>
+
+<div class="auth-container">
+    <div class="auth-card">
+
+        <h2>My Profile</h2>
+
+        <img src="{{ user_obj.profile_image.url|default:'/static/images/default_user.png' }}"
+             width="120">
+
+        <p><strong>Name:</strong> {{ user_obj.full_name }}</p>
+        <p><strong>Email:</strong> {{ user_obj.email }}</p>
+        <p><strong>Phone:</strong> {{ user_obj.phone }}</p>
+
+        <a href="{% url 'accounts:edit_profile' %}" class="primary-btn">Edit Profile</a>
+        <a href="{% url 'accounts:change_password' %}" class="secondary-btn">Change Password</a>
+
+        <hr>
+
+        <h3>Addresses</h3>
+        <a href="{% url 'accounts:add_address' %}">Add New Address</a>
+
+        {% for address in addresses %}
+            <div>
+                <p>{{ address.address_line1 }}, {{ address.city }}</p>
+                {% if address.is_default %}
+                    <strong>Default</strong>
+                {% else %}
+                    <a href="{% url 'accounts:set_default_address' address.id %}">
+                        Set as Default
+                    </a>
+                {% endif %}
+                <a href="{% url 'accounts:edit_address' address.id %}">Edit</a>
+                <a href="{% url 'accounts:delete_address' address.id %}">Delete</a>
+            </div>
+        {% empty %}
+            <p>No addresses added.</p>
+        {% endfor %}
+
+    </div>
+</div>
+
+</body>
+</html>
+

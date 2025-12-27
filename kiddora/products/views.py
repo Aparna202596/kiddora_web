@@ -1,28 +1,43 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Product, Category
-from django.core.paginator import Paginator
+from .models import Category, Subcategory, Product
 
-def product_list(request, slug=None):
-    products = Product.objects.filter(is_active=True)
-    category = None
+def home_view(request):
+    categories = Category.objects.filter(is_active=True)
+    products = Product.objects.filter(is_active=True).order_by('-id')[:8]
 
-    if slug:
-        category = get_object_or_404(Category, slug=slug)
-        products = products.filter(category=category)
+    return render(request, 'core/home.html', {
+        'categories': categories,
+        'products': products
+    })
 
-    paginator = Paginator(products, 12)
-    page = request.GET.get('page')
-    products = paginator.get_page(page)
+def category_list_view(request):
+    categories = Category.objects.filter(is_active=True)
+    return render(request, 'products/category_list.html', {
+        'categories': categories
+    })
+
+def sub_category_view(request, subcategory_id):
+    subcategory = get_object_or_404(Subcategory, id=subcategory_id)
+    products = Product.objects.filter(
+        subcategory=subcategory,
+        is_active=True
+    )
 
     return render(request, 'products/product_list.html', {
-        'products': products,
-        'category': category
+        'subcategory': subcategory,
+        'products': products
     })
-def product_detail(request, slug):
-    product = get_object_or_404(Product, slug=slug, is_active=True)
+
+def product_list_view(request):
+    products = Product.objects.filter(is_active=True)
+    return render(request, 'products/product_list.html', {
+        'products': products
+    })
+def product_detail_view(request, product_id):
+    product = get_object_or_404(Product, id=product_id, is_active=True)
+    variants = product.variants.filter(is_active=True)
+
     return render(request, 'products/product_detail.html', {
         'product': product,
-        'variants': product.variants.all(),
-        'images': product.images.all(),
-        'reviews': product.reviews.all(),
+        'variants': variants
     })

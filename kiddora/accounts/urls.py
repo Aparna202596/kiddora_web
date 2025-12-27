@@ -4,21 +4,26 @@ from . import views
 app_name = 'accounts'
 
 urlpatterns = [
-    path('home/', views.home_page, name='home'),
-    path('signup/', views.signup_page, name='signup'),
-    path('login/', views.login_page, name='login'),
-    path('logout/', views.logout_view, name='logout'),
+    path('signup/', views.signup_view, name='signup'),
+    path('login/', views.login_view, name='login'),
+    path('blocked/', views.blocked_user_view, name='blocked'),
+    path('verify-otp/', views.verify_otp_view, name='verify_otp'),
+    path('resend-otp/', views.resend_otp_view, name='resend_otp'), 
+    path('social-login/callback/', views.social_login_callback, name='social_login_callback'),
 
-    path('otp/verify/<int:user_id>/', views.verify_otp, name='verify_otp'),
-    path('otp/resend/<int:user_id>/', views.resend_otp, name='resend_otp'),
-    path('change-password/', views.change_password, name='change_password'),
-    path('password/forgot/', views.forgot_password, name='forgot_password'),
-    path('password/reset/<int:user_id>/', views.reset_password, name='reset_password'),
+    path('forgot-password/', views.forgot_password_view, name='forget_password'),
+    path('reset-password/', views.reset_password_view, name='reset_password'),
+    path('change-password/', views.change_password_view, name='change_password'),
 
-    path('admin/users/', views.admin_page, name='admin_page'),
-    path('admin/users/add/', views.admin_add, name='admin_add'),
-    path('admin/users/edit/<int:id>/', views.admin_edit, name='admin_edit'),
-    path('admin/users/delete/<int:id>/', views.admin_delete, name='admin_delete'),
-    path('admin/users/toggle/<int:id>/', views.toggle_block, name='toggle_block'),
+    path('profile/', views.profile_view, name='profile'),
+    path('profile/edit/', views.edit_profile_view, name='edit_profile'),
+    
+    path('address/add/', views.add_address_view, name='add_address'),
+    path('address/edit/<int:address_id>/', views.edit_address_view, name='edit_address'),
+    path('address/delete/<int:address_id>/', views.delete_address_view, name='delete_address'),
+    path('address/default/<int:address_id>/', views.set_default_view, name='set_default_address'),
+
+
+
 ]
 

@@ -1,0 +1,79 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+
+<h2>User Management</h2>
+
+<form method="get">
+    <input type="text" name="q" value="{{ search_query }}" placeholder="Search users">
+    <button type="submit">Search</button>
+
+    {% if search_query %}
+        <a href="{% url 'admin_user_list' %}">Clear</a>
+    {% endif %}
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Joined</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.date_joined|date:"Y-m-d" }}</td>
+            <td>{{ user.full_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.phone }}</td>
+            <td>
+                {% if user.is_active %}
+                    Active
+                {% else %}
+                    Blocked
+                {% endif %}
+            </td>
+            <td>
+                {% if not user.is_superuser %}
+                <button onclick="confirmToggle('{{ user.id }}')">
+                    {% if user.is_active %}Block{% else %}Unblock{% endif %}
+                </button>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No users found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Pagination -->
+<div>
+    {% if users.has_previous %}
+        <a href="?page={{ users.previous_page_number }}&q={{ search_query }}">Prev</a>
+    {% endif %}
+
+    Page {{ users.number }} of {{ users.paginator.num_pages }}
+
+    {% if users.has_next %}
+        <a href="?page={{ users.next_page_number }}&q={{ search_query }}">Next</a>
+    {% endif %}
+</div>
+
+<script>
+function confirmToggle(userId) {
+    if (confirm("Are you sure you want to change this user's status?")) {
+        window.location.href = `/admin/users/toggle/${userId}/`;
+    }
+}
+</script>
+
+{% endblock %}

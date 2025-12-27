@@ -29,11 +29,10 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS','127.0.0.1,localhost').split(',')
 
+#AUTH_USER_MODEL = 'accounts.CustomUser'
+
 # Application definition
 INSTALLED_APPS = [
-    # Local apps
-    'accounts',
-    'products',
     # Default Django apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,17 +40,38 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Local apps
+    'accounts',
+    'products',
+    'orders',
+    'core',
+    
+    # allauth
+    'django.contrib.sites',
     # Third-party
     'rest_framework',
     'django_filters',
-    # allauth
-    'django.contrib.sites',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
 ]
+
+SITE_ID = 1
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+    },
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile'],
+        'FIELDS': ['id', 'email', 'name'],
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,6 +80,10 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+
+    'kiddora.middleware.AdminAccessMiddleware', #custom middleware to protect admin URLs
+    'accounts.middleware.BlockedUserMiddleware', #custom middleware to block inactive users
+    
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -100,6 +124,7 @@ DATABASES = {
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
+
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
@@ -118,7 +143,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-SITE_ID = 1
 # allauth settings
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',  # default

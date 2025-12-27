@@ -1,204 +1,311 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.shortcuts import render,redirect, get_object_or_404
+from core.decorators import user_login_required
 from django.contrib.auth.decorators import login_required
+from allauth.socialaccount.models import SocialAccount
 from django.contrib import messages
+from django.contrib.auth import get_user_model,login,authenticate,update_session_auth_hash
+from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
+from django.utils import timezone
+from datetime import timedelta
+from django.conf import settings
+from .models import UserAddress,CustomUser
+from .utils import generate_otp
+User = get_user_model()
 
-from .models import CustomUser, EmailOTP
-from .forms import (
-    SignupForm, LoginForm, ForgotPasswordForm,
-    OTPForm, ResetPasswordForm, ChangePasswordForm
-)
+# Signup View, with basic validation
+# user creation, and OTP/email verification trigger
+def signup_view(request):
+    if request.method == "POST":
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+# Basic validation
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match")
+            return redirect('accounts:signup')
+# Check for existing username/email/phone
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists")
+            return redirect('accounts:signup')
+# Check for existing username
+        if phone and User.objects.filter(phone=phone).exists():
+            messages.error(request, "Phone number already exists")
+            return redirect('accounts:signup')
+# Create user
+        otp = generate_otp()
+        user = User.objects.create(
+            username=username,
+            full_name=full_name,
+            email=email,
+            phone=phone,
+            password=make_password(password),
+            is_active=False,
+            email_verified=False,
+            otp=otp,
+            otp_created_at=timezone.now())
+# Send verification email with OTP
+        send_mail(
+            subject="Your OTP for Kiddora Signup",
+            message=f"Hi {full_name},\n\nYour OTP for email verification is: {otp} valid for 10 minutes.\n\nThank you for signing up!",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[email],
+            fail_silently=False)
+        request.session['otp_user_id'] = user.id
+        messages.success(request, "Account created. Please verify your email.")
+        return redirect('accounts:login')
+    return render(request, 'accounts/signup.html')
 
-# ---------------- SIGNUP ----------------
-def signup_page(request):
-    form = SignupForm(request.POST or None, request.FILES or None)
+# Login View, with email/username and password
+def login_view(request):
+    if request.method == "POST":
+        identifier = request.POST.get('identifier')  # username or email
+        password = request.POST.get('password')
+# Allow login via email or username
+        user = User.objects.filter(email=identifier).first() or \
+            User.objects.filter(username=identifier).first()
+        if user is None:
+            messages.error(request, "Invalid credentials")
+            return redirect('accounts:login')
+        user = authenticate(request, username=user.username, password=password)
+        if user is None:
+            messages.error(request, "Invalid credentials")
+            return redirect('accounts:login')
+        if not user.email_verified:
+            messages.error(request, "Please verify your email before login")
+            return redirect('accounts:login')
+        login(request, user)  # SESSION CREATED
+        return redirect('products:home')
+    return render(request, 'accounts/login.html')
 
-    if request.method == 'POST' and form.is_valid():
-        user = form.save(commit=False)
-        user.set_password(form.cleaned_data['password'])
-        user.is_active = False
+# Social Login Callback View, to handle post-login actions, user creation if needed
+def social_login_callback(request):
+    social_account = SocialAccount.objects.filter(user=request.user).first()
+    if not social_account:
+        messages.error(request, "Social login failed.")
+        return redirect('accounts:login')
+    email = social_account.extra_data.get('email')
+    full_name = social_account.extra_data.get('name')
+    user = User.objects.filter(email=email).first()      # Check if user exists
+    if not user:
+        user = User.objects.create_user(       # Create a new user if doesn't exist
+            username=email.split('@')[0],
+            email=email,
+            full_name=full_name,
+            is_active=True,
+            email_verified=True)  # Mark as verified since social login is trusted
+    login(request, user)   # Log the user in
+    messages.success(request, f"Welcome, {user.full_name}!")
+    return redirect('products:home')
+
+# OTP Verification View, for verifying email after signup
+def verify_otp_view(request):
+    user_id = request.session.get('otp_user_id')
+    if not user_id:
+        messages.error(request, "No OTP verification pending")
+        return redirect('accounts:signup')
+    user = User.objects.get(id=user_id)
+    if request.method == "POST":
+        entered_otp = request.POST.get('otp')
+        if user.otp != entered_otp: 
+            messages.error(request, "Invalid OTP")
+            return redirect('accounts:verify_otp')
+        if timezone.now() > user.otp_created_at + timedelta(minutes=10): #
+            messages.error(request, "OTP expired. Please resend OTP.")
+            return redirect('accounts:verify_otp')
+    # OTP is valid
+        user.is_active = True
+        user.email_verified = True
+        user.otp = None
+        user.otp_created_at = None
         user.save()
-
-        EmailOTP.objects.create(user=user)
-        return redirect('accounts:verify_otp', user.id)
-
-    return render(request, 'accounts/signup.html', {'form': form})
-
-
-# ---------------- LOGIN ----------------
-def login_page(request):
-    form = LoginForm(request.POST or None)
-
-    if request.method == 'POST' and form.is_valid():
-        user = authenticate(**form.cleaned_data)
-        if user:
-            login(request, user)
-            return redirect('accounts:home')
-        messages.error(request, 'Invalid credentials')
-
-    return render(request, 'accounts/login.html', {'form': form})
-
-
-# ---------------- OTP VERIFY ----------------
-def verify_otp(request, user_id):
-    user = get_object_or_404(CustomUser, id=user_id)
-    otp_obj = EmailOTP.objects.filter(user=user, is_verified=False).first()
-
-    if not otp_obj or otp_obj.is_expired():
+        messages.success(request, "Email verified successfully. You can now login.")
         return redirect('accounts:login')
+    return render(request, 'accounts/verify_otp.html')
 
-    form = OTPForm(request.POST or None)
+# Forgot Password View, to initiate password reset via OTP
+def forgot_password_view(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email, is_active=True)
+        except User.DoesNotExist:
+            messages.error(request, "No active account found with this email.")
+            return redirect('accounts:forget_password')
+        # Generate OTP
+        otp = generate_otp()
+        # Store OTP + email in session
+        request.session['reset_otp'] = otp
+        request.session['reset_email'] = email
+        # Send OTP email
+        send_mail(
+            subject='Kiddora Password Reset OTP',
+            message=f'Your password reset OTP is {otp}. It is valid for a short time.',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[email],
+            fail_silently=False)
+        messages.success(request, "OTP has been sent to your email.")
+        return redirect('accounts:reset_password')
+    return render(request, 'accounts/forget_password.html')
 
-    if request.method == 'POST' and form.is_valid():
-        if form.cleaned_data['otp'] == otp_obj.otp:
-            otp_obj.is_verified = True
-            otp_obj.save()
-            user.is_active = True
-            user.save()
-            return redirect('accounts:login')
-        messages.error(request, 'Invalid OTP')
+# Reset Password View, to reset password after OTP verification
+def reset_password_view(request):
+    if request.method == 'POST':
+        entered_otp = request.POST.get('otp')
+        new_password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        session_otp = request.session.get('reset_otp')
+        email = request.session.get('reset_email')
+        if not session_otp or not email:
+            messages.error(request, "Session expired. Please try again.")
+            return redirect('accounts:forget_password')
+        if entered_otp != session_otp:
+            messages.error(request, "Invalid OTP.")
+            return redirect('accounts:reset_password')
+        if new_password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return redirect('accounts:reset_password')
+        if len(new_password) < 6:
+            messages.error(request, "Password must be at least 6 characters.")
+            return redirect('accounts:reset_password')
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(request, "User not found.")
+            return redirect('accounts:forget_password')
+# Set new password
+        user.password = make_password(new_password)
+        user.save()
+# Clear session
+        del request.session['reset_otp']
+        del request.session['reset_email']
+        messages.success(request, "Password reset successful. Please login.")
+        return redirect('accounts:login')
+    return render(request, 'accounts/reset_password.html')
 
-    return render(request, 'accounts/otp.html', {'form': form})
+@user_login_required
+def change_password_view(request):
+    if request.method == 'POST':
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
 
-def resend_otp(request, user_id):
-    user = get_object_or_404(CustomUser, id=user_id)
+        if new_password != confirm_password:
+            messages.error(request, 'Passwords do not match')
+            return redirect('accounts:change_password')
 
-    # Invalidate previous OTPs
-    EmailOTP.objects.filter(user=user, is_verified=False).update(is_verified=True)
+        user = authenticate(username=request.user.username, password=current_password)
+        if not user:
+            messages.error(request, 'Current password is incorrect')
+            return redirect('accounts:change_password')
 
-    # Create new OTP
-    EmailOTP.objects.create(user=user)
+        request.user.set_password(new_password)
+        request.user.save()
+        update_session_auth_hash(request, request.user)
 
+        messages.success(request, 'Password updated successfully')
+        return redirect('accounts:profile')
+
+    return render(request, 'accounts/change_password.html')
+
+# Resend OTP View, for resending OTP if expired or lost
+def resend_otp_view(request):
+    user_id = request.session.get('otp_user_id')
+    if not user_id:
+        messages.error(request, "No OTP verification pending")
+        return redirect('accounts:signup')
+    user = User.objects.get(id=user_id)
+# Check if last OTP was sent less than 1 minute ago
+    if user.otp_created_at and timezone.now() < user.otp_created_at + timedelta(seconds=60):
+        messages.error(request, "Please wait before requesting a new OTP.")
+        return redirect('accounts:verify_otp')
+    # Generate new OTP
+    otp = generate_otp()
+    user.otp = otp
+    user.otp_created_at = timezone.now()
+    user.save()
+    # Send OTP via email
+    send_mail(
+        subject="Your new OTP for Kiddora Signup",
+        message=f"Hello {user.full_name}, your new OTP is {otp}. It is valid for 10 minutes.",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
+        fail_silently=False)
     messages.success(request, "A new OTP has been sent to your email.")
-    return redirect('accounts:verify_otp', user.id)
-# ---------------- FORGOT PASSWORD ----------------
-def forgot_password(request):
-    form = ForgotPasswordForm(request.POST or None)
+    return redirect('accounts:verify_otp')
 
-    if request.method == 'POST' and form.is_valid():
-        user = CustomUser.objects.filter(
-            email=form.cleaned_data['email'], is_active=True
-        ).first()
-
-        if user:
-            EmailOTP.objects.create(user=user)
-            return redirect('accounts:reset_password', user.id)
-
-        messages.error(request, 'User not found')
-
-    return render(request, 'accounts/forgot_password.html', {'form': form})
-
-
-# ---------------- RESET PASSWORD ----------------
-def reset_password(request, user_id):
-    user = get_object_or_404(CustomUser, id=user_id)
-    otp_obj = EmailOTP.objects.filter(user=user, is_verified=False).first()
-
-    if not otp_obj or otp_obj.is_expired():
-        return redirect('accounts:login')
-
-    form = ResetPasswordForm(request.POST or None)
-    otp_form = OTPForm(request.POST or None)
-
-    if request.method == 'POST' and form.is_valid() and otp_form.is_valid():
-        if otp_form.cleaned_data['otp'] != otp_obj.otp:
-            messages.error(request, 'Invalid OTP')
-        else:
-            user.set_password(form.cleaned_data['new_password'])
-            user.save()
-            otp_obj.is_verified = True
-            otp_obj.save()
-            return redirect('accounts:login')
-
-    return render(request, 'accounts/reset_password.html', {
-        'form': form, 'otp_form': otp_form
+@user_login_required
+def profile_view(request):
+    user = request.user
+    addresses = UserAddress.objects.filter(user=user).order_by('-is_default')
+    return render(request, 'admin_profile/profile.html', {
+        'user_obj': user,
+        'addresses': addresses
     })
 
-
-# ---------------- CHANGE PASSWORD ----------------
-@login_required
-def change_password(request):
+@user_login_required
+def edit_profile_view(request):
+    user = request.user
     if request.method == 'POST':
-        form = ChangePasswordForm(user=request.user, data=request.POST)
-        if form.is_valid():
-            form.save()
-            update_session_auth_hash(request, request.user)
-            messages.success(request, "Password changed successfully.")
-            return redirect('accounts:home')
-    else:
-        form = ChangePasswordForm(user=request.user)
-
-    return render(request, 'accounts/change_password.html', {'form': form})
-
-@login_required
-def home_page(request):
-    return render(request, 'accounts/home.html')
-
-
-@login_required
-def logout_view(request):
-    logout(request)
-    return redirect('accounts:login')
-
-
-@login_required
-def admin_page(request):
-    if not request.user.is_staff:
-        return redirect('accounts:home')
-
-    users = CustomUser.objects.all()
-    return render(request, 'accounts/admin_page.html', {'users': users})
-
-@login_required
-def admin_add(request):
-    if not request.user.is_staff:
-        return redirect('accounts:home')
-
-    form = SignupForm(request.POST or None, request.FILES or None)
-
-    if request.method == 'POST' and form.is_valid():
-        user = form.save(commit=False)
-        user.set_password(form.cleaned_data['password'])
-        user.is_active = True
+        user.full_name = request.POST.get('full_name')
+        user.phone = request.POST.get('phone')
+        if 'profile_image' in request.FILES:
+            user.profile_image = request.FILES['profile_image']
         user.save()
-        messages.success(request, 'User added successfully')
-        return redirect('accounts:admin_page')
+        messages.success(request, 'Profile updated successfully')
+        return redirect('accounts:profile')
+    return render(request, 'admin_profile/profile_edit.html', {'user_obj': user})
 
-    return render(request, 'accounts/admin_add.html', {'form': form})
+@user_login_required
+def add_address_view(request):
+    if request.method == 'POST':
+        UserAddress.objects.create(
+            user=request.user,
+            address_line1=request.POST['address_line1'],
+            city=request.POST['city'],
+            state=request.POST['state'],
+            country=request.POST['country'],
+            pincode=request.POST['pincode'],
+            address_type=request.POST['address_type']
+        )
+        messages.success(request, 'Address added')
+        return redirect('accounts:profile')
 
-@login_required
-def admin_edit(request, id):
-    if not request.user.is_staff:
-        return redirect('accounts:home')
+    return render(request, 'accounts/add_address.html')
 
-    user = get_object_or_404(CustomUser, id=id)
-    form = SignupForm(request.POST or None, request.FILES or None, instance=user)
+@user_login_required
+def edit_address_view(request, address_id):
+    address = get_object_or_404(UserAddress, id=address_id, user=request.user)
 
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        messages.success(request, 'User updated successfully')
-        return redirect('accounts:admin_page')
+    if request.method == 'POST':
+        address.address_line1 = request.POST['address_line1']
+        address.city = request.POST['city']
+        address.state = request.POST['state']
+        address.country = request.POST['country']
+        address.pincode = request.POST['pincode']
+        address.save()
+        messages.success(request, 'Address updated')
+        return redirect('accounts:profile')
 
-    return render(request, 'accounts/admin_edit.html', {'form': form, 'user': user})
-@login_required
-def admin_delete(request, id):
-    if not request.user.is_staff:
-        return redirect('accounts:home')
+    return render(request, 'accounts/edit_address.html', {'address': address})
 
-    user = get_object_or_404(CustomUser, id=id)
-    user.delete()
-    messages.success(request, 'User deleted successfully')
-    return redirect('accounts:admin_page')
-@login_required
-def toggle_block(request, id):
-    if not request.user.is_staff:
-        return redirect('accounts:home')
+@user_login_required
+def delete_address_view(request, address_id):
+    address = get_object_or_404(UserAddress, id=address_id, user=request.user)
+    address.delete()
+    messages.success(request, 'Address deleted')
+    return redirect('accounts:profile')
 
-    user = get_object_or_404(CustomUser, id=id)
-    user.is_blocked = not user.is_blocked
-    user.save()
-    status = 'blocked' if user.is_blocked else 'unblocked'
-    messages.success(request, f'User {status} successfully')
-    return redirect('accounts:admin_page')
+@user_login_required
+def set_default_view(request, address_id):
+    UserAddress.objects.filter(user=request.user).update(is_default=False)
+    UserAddress.objects.filter(id=address_id, user=request.user).update(is_default=True)
+    return redirect('accounts:profile')
 
+# Blocked User View, for users who are blocked
+def blocked_user_view(request):
+    return render(request, 'blocked.html')
 

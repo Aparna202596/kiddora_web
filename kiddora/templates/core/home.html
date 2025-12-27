@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kiddora | Home</title>
+</head>
+<body>
+
+<header>
+    <h1>Kiddora</h1>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'accounts:profile' %}">My Profile</a>
+    {% else %}
+        <a href="{% url 'accounts:login' %}">Login</a>
+        <a href="{% url 'accounts:signup' %}">Sign Up</a>
+    {% endif %}
+</header>
+
+<h2>Categories</h2>
+<ul>
+    {% for category in categories %}
+        <li>{{ category.category_name }}</li>
+    {% endfor %}
+</ul>
+
+<h2>Featured Products</h2>
+<div>
+    {% for product in products %}
+        <div>
+            <h4>{{ product.product_name }}</h4>
+            <p>₹{{ product.final_price }}</p>
+            <a href="{% url 'products:product_detail' product.id %}">View</a>
+        </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>

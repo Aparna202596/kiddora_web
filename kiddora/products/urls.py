@@ -1,20 +1,18 @@
 from django.urls import path
-from . import views
-from .views_cart import add_to_cart, update_cart, remove_from_cart
-from .views_wishlist import toggle_wishlist
+from .views import (
+    home_view,
+    category_list_view,
+    sub_category_view,
+    product_list_view,
+    product_detail_view
+)
+
+app_name = 'products'
 
 urlpatterns = [
-    path('', views.product_list, name='product_list'),
-    path('category/<slug:slug>/', views.product_list, name='category_products'),
-    path('<slug:slug>/', views.product_detail, name='product_detail'),
-
-    # Cart
-    path('cart/add/', add_to_cart, name='add_to_cart'),
-    path('cart/update/', update_cart, name='update_cart'),
-    path('cart/remove/', remove_from_cart, name='remove_from_cart'),
-
-    # Wishlist
-    path('wishlist/toggle/', toggle_wishlist, name='toggle_wishlist'),
+    path('', home_view, name='home'),
+    path('categories/', category_list_view, name='category_list'),
+    path('products/', product_list_view, name='product_list'),
+    path('subcategory/<int:subcategory_id>/', sub_category_view, name='subcategory_products'),
+    path('product/<int:product_id>/', product_detail_view, name='product_detail'),
 ]
-
-

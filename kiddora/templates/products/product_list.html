@@ -1,24 +1,32 @@
-{% for product in products %}
-<div class="product-card">
-    <img src="{{ product.images.first.image.url }}">
-    <h4>{{ product.name }}</h4>
-    <p>₹{{ product.price }}</p>
-    <a href="{% url 'product_detail' product.slug %}">View</a>
+{% extends "base.html" %}
+{% block content %}
+<h2>
+    {% if subcategory %}
+        Products in {{ subcategory.subcategory_name }}
+    {% else %}
+        All Products
+    {% endif %}
+</h2>
+<div class="categories">
+  {% for cat in categories %}
+    <a href="{% url 'products:category_products' cat.id %}">{{ cat.category_name }}</a>
+  {% endfor %}
 </div>
-{% endfor %}
-<!-- Image Gallery -->
-{% for image in product.images.all %}
-<img src="{{ image.image.url }}">
-{% endfor %}
-
-<!-- Variant Selection -->
-<select id="variant">
-{% for v in product.variants.all %}
-<option value="{{ v.id }}">
-    {{ v.size }} - {{ v.color }} ({{ v.stock }} left)
-</option>
-{% endfor %}
-</select>
-
-<button onclick="addToCart()">Add to Cart</button>
-<script src="{% static 'js/cart.js' %}"></script>
+<div class="products">
+  {% for product in products %}
+    <div class="product">
+      <a href="{% url 'products:product_detail' product.id %}">{{ product.product_name }}</a>
+      <p>Price: {{ product.final_price }}</p>
+    </div>
+  {% endfor %}
+</div>
+<div class="pagination">
+  {% if products.has_previous %}
+    <a href="?page={{ products.previous_page_number }}">Previous</a>
+  {% endif %}
+  Page {{ products.number }} of {{ products.paginator.num_pages }}
+  {% if products.has_next %}
+    <a href="?page={{ products.next_page_number }}">Next</a>
+  {% endif %}
+</div>
+{% endblock %}
