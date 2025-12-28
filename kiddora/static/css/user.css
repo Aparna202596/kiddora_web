@@ -114,9 +114,9 @@ ul {
    FOOTER
 ================================ */
 .site-footer {
-    background-color: #f8f8f8;
+    background-color: #fff;
     padding-top: 40px;
-    border-top: 1px solid #eaeaea;
+    border-top: 1px solid #ffffff;
 }
 
 .footer-container {
@@ -162,7 +162,7 @@ ul {
 
 .footer-column input[type="email"] {
     padding: 8px 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #ffffff;
     border-radius: 5px;
 }
 
@@ -201,13 +201,11 @@ ul {
     padding: 15px 0;
     margin-top: 30px;
     font-size: 13px;
-    color: #666;
-    border-top: 1px solid #ddd;
+    color: #393939;
+    border-top: 1px solid #ffffff;
 }
 
-/* ===============================
-   RESPONSIVE (BASIC)
-================================ */
+/* RESPONSIVE (BASIC)*/
 @media (max-width: 992px) {
     .main-nav {
         display: none;
@@ -227,4 +225,130 @@ ul {
         width: 140px;
     }
 }
+/* About Us Page Styling */
+.about-us {
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    color: #333;
+    line-height: 1.8;
+}
 
+.about-us h1, 
+.about-us h3 {
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
+    color: #ff6f61; /* Brand accent color */
+}
+
+.about-us h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.about-us h3 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+}
+
+.about-us p {
+    font-size: 1.125rem;
+    margin-bottom: 1.25rem;
+}
+
+.about-us ul li {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+}
+
+.about-us .section-content,
+.about-us .why-choose-us,
+.about-us .vision,
+.about-us .join-family {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.about-us .btn-primary {
+    background-color: #ff6f61;
+    border-color: #ff6f61;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.about-us .btn-primary:hover {
+    background-color: #ff4a3a;
+    border-color: #ff4a3a;
+    transform: translateY(-2px);
+}
+
+.about-us ul {
+    padding-left: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .about-us h1 {
+        font-size: 2.2rem;
+    }
+    .about-us h3 {
+        font-size: 1.5rem;
+    }
+    .about-us p,
+    .about-us ul li {
+        font-size: 1rem;
+    }
+}
+
+/* Privacy Policy Page */
+.privacy-policy {
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    color: #333;
+    line-height: 1.8;
+}
+
+.privacy-policy h1, .privacy-policy h3 {
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
+    color: #ff6f61;
+}
+
+.privacy-policy h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.privacy-policy h3 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+}
+
+.privacy-policy p {
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+}
+
+.privacy-policy ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.privacy-policy ul li {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+}
+
+.privacy-policy .text-center p {
+    font-size: 1.125rem;
+    margin-top: 2rem;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .privacy-policy h1 {
+        font-size: 2.2rem;
+    }
+    .privacy-policy h3 {
+        font-size: 1.5rem;
+    }
+    .privacy-policy p, .privacy-policy ul li {
+        font-size: 1rem;
+    }
+}

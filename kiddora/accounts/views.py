@@ -78,7 +78,7 @@ def login_view(request):
             messages.error(request, "Please verify your email before login")
             return redirect('accounts:login')
         login(request, user)  # SESSION CREATED
-        return redirect('products:home')
+        return redirect('core:home_view')
     return render(request, 'accounts/login.html')
 
 # Social Login Callback View, to handle post-login actions, user creation if needed

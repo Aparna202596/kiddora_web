@@ -1,13 +1,16 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Category, Subcategory, Product
 
-def home_view(request):
-    categories = Category.objects.filter(is_active=True)
-    products = Product.objects.filter(is_active=True).order_by('-id')[:8]
+def product_search_view(request):
+    query = request.GET.get('q', '')
+    products = Product.objects.filter(
+        is_active=True,
+        product_name__icontains=query
+    ) if query else Product.objects.none()
 
-    return render(request, 'core/home.html', {
-        'categories': categories,
-        'products': products
+    return render(request, 'products/product_search.html', {
+        'products': products,
+        'query': query
     })
 
 def category_list_view(request):

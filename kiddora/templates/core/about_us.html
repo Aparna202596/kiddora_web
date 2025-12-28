@@ -1,18 +1,62 @@
 {% extends "base_user.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kiddora | Kids Clothing</title>
+    <link rel="stylesheet" href="/static/css/user.css">
+</head>
+<body>
 {% block title %}About Us | Kiddora{% endblock %}
 
 {% block content %}
-<section class="static-page">
-    <h1>About Kiddora</h1>
-    <p>
-        Kiddora is a modern e-commerce platform designed to deliver high-quality products
-        with a seamless shopping experience. Our goal is to make online shopping simple,
-        secure, and enjoyable.
-    </p>
+<section class="static-page about-us container py-5">
+    <div class="section-header text-center mb-5">
+        <h1 class="display-4 fw-bold">Welcome to Kiddora</h1>
+        <p class="lead">Dress Your Little Stars in Style!</p>
+    </div>
 
-    <p>
-        We focus on quality, customer satisfaction, and innovation while ensuring
-        transparency and trust in every transaction.
-    </p>
+    <div class="section-content mb-5">
+        <p>
+            At <b>Kiddora</b>, we believe every child deserves to shine with confidence and comfort. 
+            Our mission is to provide high-quality, stylish, and playful clothing for kids aged <b>0-15 years</b>, 
+            making every moment - from playground fun to family celebrations - both comfortable and memorable.
+        </p>
+        <p>
+            Founded in <b>2025</b>, Kiddora is a passion-driven brand built with love for children, 
+            attention to detail, and a commitment to quality. We combine <b>trendy designs, durable fabrics, 
+            and affordable pricing</b> to ensure every child looks their best, every day.
+        </p>
+    </div>
+
+    <div class="why-choose-us mb-5">
+        <h3 class="fw-bold mb-3">🌟 Why Choose Kiddora?</h3>
+        <ul class="list-unstyled ps-0">
+            <li>✅ Wide range of clothing for newborns, toddlers, and teens</li>
+            <li>✅ Unique designs inspired by the latest fashion trends</li>
+            <li>✅ Trendy, comfortable, and safe fabrics for sensitive skin</li>
+            <li>✅ Easy and secure online shopping experience</li>
+            <li>✅ Fast & reliable delivery across India</li>
+            <li>✅ Exciting offers, discounts, and loyalty rewards</li>
+            <li>✅ Friendly customer support ready to help</li>
+        </ul>
+    </div>
+
+    <div class="vision mb-5">
+        <h3 class="fw-bold mb-3">👗 👕 Our Vision</h3>
+        <p>
+            To become a trusted destination for kids' fashion where style meets comfort, 
+            quality meets affordability, and every outfit sparks joy.
+        </p>
+    </div>
+
+    <div class="join-family text-center">
+        <h3 class="fw-bold mb-3">🤝 Join the Kiddora Family!</h3>
+        <p>
+            Explore our delightful collections and let your little ones express their unique personalities through fashion. 
+            Follow us on social media, subscribe to our newsletter, and stay updated with the latest trends, offers, and more!
+        </p>
+        <a href="/shop" class="btn btn-primary btn-lg mt-3">Shop Now</a>
+    </div>
 </section>
 {% endblock %}

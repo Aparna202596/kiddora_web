@@ -1,35 +1,68 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>category</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
-        <h2>All Categories</h2>
+{% load static %}
 
-<ul>
-{% for category in categories %}
-    <li>
-        {{ category.category_name }}
-        <ul>
-            {% for sub in category.subcategories.all %}
-                <li>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories | Kiddora</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+<section class="category-page">
+    <h2 class="page-title">Shop by Category</h2>
+
+    <div class="category-container">
+
+        {% for category in categories %}
+        <div class="category-card">
+
+            <!-- Category Image -->
+            <div class="category-image">
+                {% if category.image %}
+                    <img src="{{ category.image.url }}" alt="{{ category.category_name }}">
+                {% else %}
+                    <img src="{% static 'images/default_category.jpg' %}" alt="Category">
+                {% endif %}
+            </div>
+
+            <!-- Category Name -->
+            <h3 class="category-title">{{ category.category_name }}</h3>
+
+            <!-- Subcategories -->
+            <ul class="subcategory-list">
+                {% for sub in category.subcategories.all %}
+                <li class="subcategory-item">
+
                     <a href="{% url 'products:subcategory_products' sub.id %}">
-                        {{ sub.subcategory_name }}
+                        <div class="subcategory-box">
+
+                            <!-- Subcategory Image -->
+                            {% if sub.image %}
+                                <img src="{{ sub.image.url }}" alt="{{ sub.subcategory_name }}">
+                            {% else %}
+                                <img src="{% static 'images/default_subcategory.jpg' %}" alt="Subcategory">
+                            {% endif %}
+
+                            <span>{{ sub.subcategory_name }}</span>
+                        </div>
                     </a>
+
                 </li>
-            {% endfor %}
-        </ul>
-    </li>
-{% endfor %}
-</ul>
-    </body>
+                {% empty %}
+                <li class="no-subcategory">No subcategories available</li>
+                {% endfor %}
+            </ul>
+
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+
+</body>
 </html>

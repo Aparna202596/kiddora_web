@@ -20,13 +20,20 @@ from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect
 
+from django.contrib import admin
+from django.urls import path, include
+from django.shortcuts import redirect
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
-    path('', lambda request: redirect('accounts:login')),  # ROOT FIX
+    path('admin/', admin.site.urls),
+
     path('accounts/', include('accounts.urls')),
     path('products/', include('products.urls')),
-    path('admin/dashboard/', include('core.urls')),
-    path('admin/', admin.site.urls),
+    path('core/', include('core.urls')),
+    # Root URL → anonymous home page
+    path('', lambda request: redirect('core:anonymous_user_home'), name='root_redirect'),
 ]
-
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

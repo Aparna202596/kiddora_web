@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kiddora | Kids Clothing</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- HEADER -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -8,74 +18,85 @@
 <!-- Base CSS -->
         <link rel="stylesheet" href="{% static 'css/user.css' %}">
 <!-- Icons (Font Awesome) -->
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
             integrity="sha512-..."
             crossorigin="anonymous"
             referrerpolicy="no-referrer" />
     </head>
     <body>
 <!--Header-->
-        <header class="site-header">
-            <div class="header-container">
+<header class="site-header">
+    <div class="header-container">
 <!-- Logo -->
-                <div class="logo">
-                    <a href="{% url 'core:home' %}">
-                        <img src="{% static 'images/kiddora_logo.PNG' %}" alt="Kiddora Logo">
-                    </a>
-                </div>
+        <div class="logo">
+            <a href="{% url 'core:anonymous_user_home' %}"><img src="{% static 'images/kiddora_logo.PNG' %}" alt="Kiddora Logo"></a>
+        </div>
 <!-- Navigation -->
-                <nav class="main-nav">
-                    <ul>
-                        <li><a href="{% url 'core:home' %}">Home</a></li>
-                        <li><a href="{% url 'core:about_us' %}">About Us</a></li>
-                        <li>
-                            <select class="category-dropdown" onchange="if (this.value) window.location.href=this.value;">
-                                <option value="">Categories</option>
-                                {% for category in header_categories %}
-                                <option value="{% url 'core:category_products' category.slug %}">
-                                    {{ category.category_name }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                        </li>
-                        <li><a href="#">Shop</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </nav>
-<!-- Search + Icons -->
-                <div class="header-actions">
-<!-- Search -->
-                    <form method="get" action="{% url 'products:product_search' %}" class="search-form">  
-                    <input
-                            type="text"
-                            name="q"
-                            placeholder="Search products..."
-                            value="{{ request.GET.q|default:'' }}"
-                            required
-                        >
-                        <button type="submit">Search</button>
-                    </form>
-<!-- Wishlist -->
-                    <a href="#" class="icon-btn">
-                        <i class="fa-regular fa-heart"></i>
-                    </a>
-<!-- Profile -->
-                    <a href="{% url 'accounts:profile' %}" class="icon-btn">
-                        <i class="fa-regular fa-user"></i>
-                    </a>
-<!-- Cart -->
-                    <a href="#" class="icon-btn">
-                        <i class="fa fa-shopping-cart"></i>
-                    </a>
-                </div>
-            </div>
-        </header>
-<!-- MAIN CONTENT -->
-        <main class="main-content">
-            {% block content %}
-            {% endblock %}
-        </main>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="{% url 'core:anonymous_user_home' %}">Home</a></li>
+                <li><a href="{% url 'core:about_us' %}">About Us</a></li>
+                <li>
+                    <select onchange="if(this.value) location.href=this.value;">
+                        <option value="">Categories</option>
+                        {% for category in categories %}
+                        <option value="{% url 'products:category_list' %}">
+                        {{ category.category_name }}
+                        </option>
+                    {% endfor %}
+                    </select>
+
+                </li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="{% url 'core:contact_us' %}">Contact</a></li>
+            </ul>
+        </nav>
+
+    <div class="auth-buttons">
+        <a href="{% url 'accounts:login' %}" class="login-link">Login</a>
+        <a href="{% url 'accounts:signup' %}" class="signup-btn">Sign up</a>
+    </div>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <img src="/static/images/banner.png" alt="Christmas Sale Banner">
+</section>
+
+<!-- SHOP BY CATEGORY -->
+<section class="section">
+    <h2>SHOP BY CATEGORY</h2>
+    <div class="category-grid">
+        <div class="category-card">Newborn</div>
+        <div class="category-card">Boys</div>
+        <div class="category-card">Girls</div>
+        <div class="category-card">Casuals</div>
+        <div class="category-card">Ethnic</div>
+    </div>
+</section>
+
+<!-- TOP TRENDS -->
+<section class="section">
+    <h2>TOP TRENDS</h2>
+    <div class="product-grid">
+        <div class="product-card">Dress</div>
+        <div class="product-card">Rompers</div>
+        <div class="product-card">Sweaters</div>
+        <div class="product-card">Shirts & Shorts</div>
+    </div>
+</section>
+
+<!-- NEW ARRIVALS -->
+<section class="section">
+    <h2>NEW ARRIVALS</h2>
+    <div class="product-grid">
+        <div class="product-card">Product 1</div>
+        <div class="product-card">Product 2</div>
+        <div class="product-card">Product 3</div>
+        <div class="product-card">Product 4</div>
+    </div>
+</section>
+
 <!-- FOOTER -->
         <footer class="site-footer">
             <div class="footer-container">

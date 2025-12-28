@@ -11,9 +11,42 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from core.decorators import admin_required
 from accounts.models import CustomUser
+from core.decorators import user_login_required
 from orders.models import Order, OrderItem, Payment
+from products.models import Category, Subcategory, Product
 
 User = get_user_model()
+
+def notlogged_home_view(request):
+    categories = Category.objects.filter(is_active=True)
+    products = Product.objects.filter(is_active=True).order_by('-id')[:8]
+
+    return render(request, 'core/notlogged_home.html', {
+        'categories': categories,
+        'products': products
+    })
+
+def aboutus_view(request):
+    return render(request, 'core/about_us.html')
+
+def contactus_view(request):
+    return render(request, 'core/contact_us.html')
+
+def privacy_policy_view(request):
+    return render(request, 'core/privacy_policy.html')
+
+def terms_conditions_view(request):
+    return render(request, 'core/terms_conditions.html')
+
+@user_login_required
+def home_view(request):
+    categories = Category.objects.filter(is_active=True)
+    products = Product.objects.filter(is_active=True).order_by('-id')[:8]
+
+    return render(request, 'core/home.html', {
+        'categories': categories,
+        'products': products
+    })
 
 @login_required
 @admin_required
