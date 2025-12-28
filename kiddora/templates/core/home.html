@@ -78,25 +78,25 @@
                 <div class="footer-column">
                     <h4>Info</h4>
                     <ul>
-                        <li><a href="{% url 'store:contact' %}">Contact Us</a></li>
-                        <li><a href="{% url 'store:about' %}">About Us</a></li>
-                        <li><a href="{% url 'store:blog' %}">Blog</a></li>
+                        <li><a href="{% url 'core:contact' %}">Contact Us</a></li>
+                        <li><a href="{% url 'core:about' %}">About Us</a></li>
+                        <li><a href="{% url 'core:blog' %}">Blog</a></li>
                     </ul>
                 </div>
 <!-- Policies -->
                 <div class="footer-column">
                     <h4>Policies</h4>
                     <ul>
-                        <li><a href="{% url 'store:privacy' %}">Privacy Notice</a></li>
-                        <li><a href="{% url 'store:return_policy' %}">Return Policy</a></li>
-                        <li><a href="{% url 'store:terms' %}">Terms and Conditions</a></li>
-                        <li><a href="{% url 'store:cookie_policy' %}">Cookie Policy</a></li>
+                        <li><a href="{% url 'core:privacy' %}">Privacy Notice</a></li>
+                        <li><a href="{% url 'core:return_policy' %}">Return Policy</a></li>
+                        <li><a href="{% url 'core:terms' %}">Terms and Conditions</a></li>
+                        <li><a href="{% url 'core:cookie_policy' %}">Cookie Policy</a></li>
                     </ul>
                 </div>
 <!-- Newsletter -->
                 <div class="footer-column">
                     <h4>Subscribe to Our Newsletter</h4>
-                    <form method="post" action="{% url 'store:newsletter_subscribe' %}">
+                    <form method="post" action="{% url 'core:newsletter_subscribe' %}">
                         {% csrf_token %}
                         <input type="email" name="email" placeholder="Email Address" required>
                         <button type="submit">Subscribe</button>

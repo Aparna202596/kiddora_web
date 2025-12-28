@@ -38,6 +38,15 @@ def privacy_policy_view(request):
 def terms_conditions_view(request):
     return render(request, 'core/terms_conditions.html')
 
+def return_policy_view(request):
+    return render(request, 'core/return_policy.html')
+
+def cookie_policy_view(request):
+    return render(request, 'core/cookie_policy.html')
+
+def blog_view(request):
+    return render(request, 'core/blog.html')
+
 @user_login_required
 def home_view(request):
     categories = Category.objects.filter(is_active=True)

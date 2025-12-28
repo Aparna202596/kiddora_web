@@ -1,97 +1,181 @@
 {% extends "base_user.html" %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Kiddora | Kids Clothing</title>
-    <link rel="stylesheet" href="/static/css/user.css">
-</head>
 {% block title %}Privacy Policy | Kiddora{% endblock %}
 
 {% block content %}
+
+<style>
+    /* -----------------------------
+       Privacy Policy Internal CSS
+    ------------------------------*/
+
+    .privacy-policy {
+        font-family: 'Poppins', 'Segoe UI', sans-serif;
+        color: #333;
+        line-height: 1.8;
+    }
+
+    .privacy-policy .section-header h1,
+    .privacy-policy h3 {
+        font-family: 'Nunito', 'Segoe UI', sans-serif;
+        color: #ff6f61;
+    }
+
+    .privacy-policy .section-header h1 {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .privacy-policy .section-header .lead {
+        font-size: 1.3rem;
+        color: #555;
+        margin-bottom: 0.5rem;
+    }
+
+    .privacy-policy p {
+        font-size: 1.125rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .privacy-policy h3 {
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+        margin-top: 2.5rem;
+    }
+
+    .privacy-policy ul {
+        padding-left: 1.5rem;
+        margin-bottom: 1.8rem;
+    }
+
+    .privacy-policy ul li {
+        font-size: 1.1rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .policy-section {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        margin-bottom: 2.5rem;
+    }
+
+    .privacy-policy .footer-note {
+        font-size: 1.15rem;
+        font-weight: 500;
+        margin-top: 3rem;
+        color: #444;
+    }
+
+    @media (max-width: 768px) {
+        .privacy-policy .section-header h1 {
+            font-size: 2.2rem;
+        }
+
+        .privacy-policy h3 {
+            font-size: 1.5rem;
+        }
+
+        .privacy-policy p,
+        .privacy-policy ul li {
+            font-size: 1rem;
+        }
+
+        .policy-section {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
 <section class="static-page privacy-policy container py-5">
+
     <div class="section-header text-center mb-5">
-        <h1 class="display-4 fw-bold">Privacy Policy</h1>
+        <h1>Privacy Policy</h1>
         <p class="lead">Your Trust. Your Privacy. Our Commitment.</p>
         <p><small>Effective Date: December 28, 2025</small></p>
     </div>
 
-    <!-- Section 1: Information We Collect -->
-    <div class="policy-section mb-5">
-        <h3 class="fw-bold mb-3">1. Information We Collect</h3>
+    <!-- Section 1 -->
+    <div class="policy-section">
+        <h3>1. Information We Collect</h3>
         <p>
-            When you interact with <b>Kiddora</b>, we may collect several types of information to provide you with a seamless shopping experience.
+            When you interact with <b>Kiddora</b>, we may collect various types of information to ensure a smooth,
+            secure, and personalized shopping experience for you and your children.
         </p>
         <ul>
-            <li><b>Personal Information:</b> Name, email, phone number, delivery address, and payment details collected when you register, place orders, or subscribe to newsletters.</li>
-            <li><b>Usage Information:</b> Data on pages visited, products viewed, search queries, and purchase history for better service and personalization.</li>
-            <li><b>Device Information:</b> IP address, device type, browser, operating system, and app version to ensure security, compatibility, and performance.</li>
-            <li><b>Children’s Information:</b> Kiddora caters to kids 0–15 years and does not knowingly collect information from children without parental consent.</li>
+            <li><b>Personal Information:</b> Name, email address, phone number, delivery address, and payment details provided during registration or checkout.</li>
+            <li><b>Usage Information:</b> Pages visited, products viewed, search history, and purchase behavior used to improve recommendations.</li>
+            <li><b>Device Information:</b> IP address, browser type, operating system, and app version to enhance security and performance.</li>
+            <li><b>Children’s Information:</b> Kiddora serves children aged 0–15 and does not knowingly collect personal data from children without parental consent.</li>
         </ul>
     </div>
 
-    <!-- Section 2: How We Use Your Information -->
-    <div class="policy-section mb-5">
-        <h3 class="fw-bold mb-3">2. How We Use Your Information</h3>
+    <!-- Section 2 -->
+    <div class="policy-section">
+        <h3>2. How We Use Your Information</h3>
         <p>
-            We use the information we collect to enhance your experience, process orders, and improve our services:
+            The information we collect is used responsibly to deliver better services and maintain platform security.
         </p>
         <ul>
-            <li><b>Order Processing & Delivery:</b> Personal and payment information is used to manage orders and deliver products efficiently.</li>
-            <li><b>Account Management:</b> Manage your Kiddora account securely with email and password information.</li>
-            <li><b>Personalization:</b> Recommend products, offers, and promotions based on browsing and purchase history.</li>
-            <li><b>Communication:</b> Send transactional notifications, newsletters, and updates. Promotional communications can be opted out anytime.</li>
-            <li><b>Security & Fraud Prevention:</b> Detect suspicious activity, prevent unauthorized transactions, and maintain a secure platform.</li>
+            <li><b>Order Processing:</b> To confirm, process, and deliver your orders efficiently.</li>
+            <li><b>Account Management:</b> To create, authenticate, and manage your Kiddora account securely.</li>
+            <li><b>Personalization:</b> To recommend products, deals, and collections tailored to your preferences.</li>
+            <li><b>Communication:</b> To send order updates, service notifications, and promotional messages (optional).</li>
+            <li><b>Fraud Prevention:</b> To monitor suspicious activities and protect against unauthorized access.</li>
         </ul>
     </div>
 
-    <!-- Section 3: How We Share Your Information -->
-    <div class="policy-section mb-5">
-        <h3 class="fw-bold mb-3">3. How We Share Your Information</h3>
+    <!-- Section 3 -->
+    <div class="policy-section">
+        <h3>3. How We Share Your Information</h3>
         <p>
-            Kiddora does not sell your personal information. We only share data in specific circumstances:
+            Kiddora respects your privacy and does not sell or rent your personal information.
+            Data sharing is limited to essential scenarios only.
         </p>
         <ul>
-            <li><b>Service Providers:</b> Trusted vendors for order delivery, payment processing, and marketing campaigns.</li>
-            <li><b>Legal Compliance:</b> Disclosure when required by law, regulation, legal process, or government request.</li>
-            <li><b>Business Transfers:</b> Data may be transferred during mergers, acquisitions, or asset sales.</li>
-            <li><b>Parental Sharing:</b> For children’s accounts, some information may be shared with parents or guardians for verification and management purposes.</li>
+            <li><b>Service Providers:</b> Trusted partners assisting with payments, logistics, and communication.</li>
+            <li><b>Legal Obligations:</b> Disclosure when required by law or legal proceedings.</li>
+            <li><b>Business Transfers:</b> In case of mergers or acquisitions, user data may be transferred securely.</li>
+            <li><b>Parental Access:</b> Information related to children’s accounts may be shared with parents or guardians.</li>
         </ul>
     </div>
 
-    <!-- Section 4: Data Security & Storage -->
-    <div class="policy-section mb-5">
-        <h3 class="fw-bold mb-3">4. Data Security & Storage</h3>
+    <!-- Section 4 -->
+    <div class="policy-section">
+        <h3>4. Data Security & Storage</h3>
         <p>
-            Protecting your data is our priority. Kiddora implements the following measures:
+            We implement strict technical and organizational measures to safeguard your data from unauthorized access.
         </p>
         <ul>
-            <li><b>Encryption:</b> Sensitive information, including payment details, is encrypted using industry-standard protocols.</li>
-            <li><b>Access Control:</b> Only authorized personnel can access personal information necessary for their duties.</li>
-            <li><b>Secure Storage:</b> Data is stored on secure servers with regular updates and monitoring.</li>
-            <li><b>Retention Policy:</b> We keep data only as long as necessary or required by law and securely delete or anonymize it afterward.</li>
+            <li><b>Encryption:</b> Sensitive data such as payment details are encrypted using industry standards.</li>
+            <li><b>Access Control:</b> Limited access granted only to authorized personnel.</li>
+            <li><b>Secure Servers:</b> Data is stored on protected servers with continuous monitoring.</li>
+            <li><b>Retention Policy:</b> Information is retained only as long as legally or operationally required.</li>
         </ul>
     </div>
 
-    <!-- Section 5: Your Rights & Choices -->
-    <div class="policy-section mb-5">
-        <h3 class="fw-bold mb-3">5. Your Rights & Choices</h3>
+    <!-- Section 5 -->
+    <div class="policy-section">
+        <h3>5. Your Rights & Choices</h3>
         <p>
-            You have rights regarding your personal information:
+            You have full control over your personal information and how it is used.
         </p>
         <ul>
-            <li><b>Access & Correction:</b> Update or correct your account information anytime.</li>
-            <li><b>Opt-Out:</b> Unsubscribe from marketing communications and newsletters.</li>
-            <li><b>Account Deletion:</b> Request deletion of your account and personal data, subject to legal or transactional requirements.</li>
-            <li><b>Cookies & Tracking:</b> Manage cookies and tracking preferences via browser settings.</li>
-            <li><b>Contact Us:</b> For privacy inquiries, email our privacy team at <b>privacy@kiddora.com</b>.</li>
+            <li><b>Access & Updates:</b> Review and update your account information anytime.</li>
+            <li><b>Marketing Preferences:</b> Opt out of promotional emails and notifications.</li>
+            <li><b>Account Deletion:</b> Request deletion of your account, subject to legal requirements.</li>
+            <li><b>Cookies:</b> Manage cookie preferences through your browser settings.</li>
+            <li><b>Contact:</b> Reach us at <b>privacy@kiddora.com</b> for privacy-related queries.</li>
         </ul>
     </div>
 
-    <div class="text-center mt-5">
+    <div class="text-center footer-note">
         <p>
-            At Kiddora, your trust is our priority. By using our website or app, you agree to the terms outlined in this Privacy Policy.
+            By using Kiddora, you agree to the terms outlined in this Privacy Policy.
+            Your trust is important to us, and we are committed to protecting it.
         </p>
     </div>
+
 </section>
+
 {% endblock %}
