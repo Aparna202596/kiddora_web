@@ -27,25 +27,25 @@ def notlogged_home_view(request):
     })
 
 def aboutus_view(request):
-    return render(request, 'core/about_us.html')
+    return render(request, 'head_foot/about_us.html')
 
 def contactus_view(request):
-    return render(request, 'core/contact_us.html')
+    return render(request, 'head_foot/contact_us.html')
 
 def privacy_policy_view(request):
-    return render(request, 'core/privacy_policy.html')
+    return render(request, 'head_foot/privacy_policy.html')
 
 def terms_conditions_view(request):
-    return render(request, 'core/terms_conditions.html')
+    return render(request, 'head_foot/terms_conditions.html')
 
 def return_policy_view(request):
-    return render(request, 'core/return_policy.html')
+    return render(request, 'head_foot/return_policy.html')
 
 def cookie_policy_view(request):
-    return render(request, 'core/cookie_policy.html')
+    return render(request, 'head_foot/cookie_policy.html')
 
 def blog_view(request):
-    return render(request, 'core/blog.html')
+    return render(request, 'head_foot/blog.html')
 
 @user_login_required
 def home_view(request):
@@ -96,7 +96,7 @@ def admin_dashboard_view(request):
         "new_customers": new_customers,
         "customer_growth": customer_growth,
     }
-    return render(request, "core/admin_dashboard.html", context)
+    return render(request, "admin_profile/admin_dashboard.html", context)
 
 @staff_member_required
 def user_management_view(request):

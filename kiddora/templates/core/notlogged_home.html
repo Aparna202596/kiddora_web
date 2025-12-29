@@ -1,156 +1,289 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Kiddora | Kids Clothing</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Home | Kiddora</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+    /* ===============================
+    HOME PAGE STYLES
+    ================================ */
+    .home-container {
+        max-width: 2500px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .banner img {
+        width: 100%;
+        border-radius: 14px;
+        margin-bottom: 40px;
+    }
+
+    .section-title {
+        text-align: center;
+        font-weight: 600;
+        margin: 40px 0 20px;
+    }
+
+    /* Categories */
+    .category-row {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+
+    .category-card {
+        text-align: center;
+        min-width: 120px;
+        flex-shrink: 0;
+    }
+
+    .category-card img {
+        width: 100%;
+        border-radius: 14px;
+    }
+
+    .category-card p {
+        margin-top: 8px;
+        font-size: 14px;
+    }
+
+    /* Tabs */
+    .tabs {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .tabs span {
+        padding: 6px 18px;
+        border-radius: 20px;
+        background: #eee;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .tabs span.active {
+        background: #f5a6d8;
+        color: #fff;
+    }
+
+    /* Products */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 20px;
+    }
+
+    .product-card {
+        position: relative;
+    }
+
+    .product-card img {
+        width: 100%;
+        border-radius: 14px;
+    }
+
+    .wishlist {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 16px;
+        color: #ff5da2;
+    }
+
+    .product-info {
+        padding-top: 8px;
+    }
+
+    .product-info h4 {
+        font-size: 14px;
+        font-weight: 500;
+        margin: 0;
+    }
+
+    .price {
+        font-weight: 600;
+    }
+
+    .rating {
+        color: #ffb400;
+        font-size: 13px;
+    }
+
+    .view-all {
+        text-align: center;
+        margin: 30px 0;
+    }
+
+    .view-all a {
+        font-size: 14px;
+        color: #555;
+        text-decoration: none;
+    }
+    </style>
 </head>
+
 <body>
 
-<!-- HEADER -->
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Kiddora{% endblock %}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Base CSS -->
-        <link rel="stylesheet" href="{% static 'css/user.css' %}">
-<!-- Icons (Font Awesome) -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-            integrity="sha512-..."
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer" />
-    </head>
-    <body>
-<!--Header-->
+<!-- ================= HEADER ================= -->
 <header class="site-header">
     <div class="header-container">
-<!-- Logo -->
+
         <div class="logo">
-            <a href="{% url 'core:anonymous_user_home' %}"><img src="{% static 'images/kiddora_logo.PNG' %}" alt="Kiddora Logo"></a>
+            <a href="{% url 'core:anonymous_user_home' %}">
+                <img src="{% static 'images/kiddora_logo.PNG' %}" alt="Kiddora Logo">
+            </a>
         </div>
-<!-- Navigation -->
+
         <nav class="main-nav">
             <ul>
                 <li><a href="{% url 'core:anonymous_user_home' %}">Home</a></li>
                 <li><a href="{% url 'core:about_us' %}">About Us</a></li>
                 <li>
-                    <select onchange="if(this.value) location.href=this.value;">
+                    <select onchange="if(this.value) window.location.href=this.value;">
                         <option value="">Categories</option>
                         {% for category in categories %}
-                        <option value="{% url 'products:category_list' %}">
-                        {{ category.category_name }}
-                        </option>
-                    {% endfor %}
+                            <option value="{% url 'products:category_list' category.slug %}">
+                                {{ category.category_name }}
+                            </option>
+                        {% endfor %}
                     </select>
-
                 </li>
                 <li><a href="#">Shop</a></li>
                 <li><a href="{% url 'core:contact_us' %}">Contact</a></li>
             </ul>
         </nav>
 
-    <div class="auth-buttons">
-        <a href="{% url 'accounts:login' %}" class="login-link">Login</a>
-        <a href="{% url 'accounts:signup' %}" class="signup-btn">Sign up</a>
+        <div class="auth-buttons">
+            <a href="{% url 'accounts:login' %}" class="login-link">Login</a>
+            <a href="{% url 'accounts:signup' %}" class="signup-btn">Sign up</a>
+        </div>
+
     </div>
 </header>
 
-<!-- HERO SECTION -->
-<section class="hero">
-    <img src="/static/images/banner.png" alt="Christmas Sale Banner">
-</section>
+<!-- ================= MAIN CONTENT ================= -->
+<div class="home-container">
 
-<!-- SHOP BY CATEGORY -->
-<section class="section">
-    <h2>SHOP BY CATEGORY</h2>
-    <div class="category-grid">
-        <div class="category-card">Newborn</div>
-        <div class="category-card">Boys</div>
-        <div class="category-card">Girls</div>
-        <div class="category-card">Casuals</div>
-        <div class="category-card">Ethnic</div>
+    <div class="banner">
+        <img src="{% static 'images/home/banner.PNG' %}" alt="New Year Sale">
     </div>
-</section>
 
-<!-- TOP TRENDS -->
-<section class="section">
-    <h2>TOP TRENDS</h2>
+    <h3 class="section-title">SHOP BY CATEGORY</h3>
+    <div class="category-row">
+        <div class="category-card">
+            <img src="{% static 'images/home/newborn.PNG' %}">
+            <p>Newborn</p>
+        </div>
+        <div class="category-card">
+            <img src="{% static 'images/home/boys.PNG' %}">
+            <p>Boys</p>
+        </div>
+        <div class="category-card">
+            <img src="{% static 'images/home/girls.PNG' %}">
+            <p>Girls</p>
+        </div>
+        <div class="category-card">
+            <img src="{% static 'images/home/casuals.PNG' %}">
+            <p>Casuals</p>
+        </div>
+        <div class="category-card">
+            <img src="{% static 'images/home/ethnic.PNG' %}">
+            <p>Ethnic</p>
+        </div>
+    </div>
+
+    <h3 class="section-title">TOP TRENDS</h3>
+    <div class="tabs">
+        <span class="active">Girls</span>
+        <span>Boys</span>
+        <span>Kids</span>
+    </div>
+
     <div class="product-grid">
-        <div class="product-card">Dress</div>
-        <div class="product-card">Rompers</div>
-        <div class="product-card">Sweaters</div>
-        <div class="product-card">Shirts & Shorts</div>
+        {% for _ in "1234" %}
+        <div class="product-card">
+            <span class="wishlist">♥</span>
+            <img src="{% static 'images/products/p1.jpg' %}">
+            <div class="product-info">
+                <h4>Stylish Dress</h4>
+                <div class="price">₹ 999</div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
-</section>
 
-<!-- NEW ARRIVALS -->
-<section class="section">
-    <h2>NEW ARRIVALS</h2>
+    <h3 class="section-title">NEW ARRIVALS</h3>
+
     <div class="product-grid">
-        <div class="product-card">Product 1</div>
-        <div class="product-card">Product 2</div>
-        <div class="product-card">Product 3</div>
-        <div class="product-card">Product 4</div>
+        {% for _ in "123456" %}
+        <div class="product-card">
+            <span class="wishlist">♥</span>
+            <img src="{% static 'images/products/p2.jpg' %}">
+            <div class="product-info">
+                <h4>Kids Cotton Wear</h4>
+                <div class="price">₹ 1,299</div>
+                <div class="rating">★★★★★</div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
-</section>
 
-<!-- FOOTER -->
-        <footer class="site-footer">
-            <div class="footer-container">
-<!-- Logo -->
-                <div class="footer-logo">
-                    <img src="{% static 'images/kiddora_logo.PNG' %}" alt="Kiddora Logo">
-                </div>
-<!-- Info -->
-                <div class="footer-column">
-                    <h4>Info</h4>
-                    <ul>
-                        <li><a href="{% url 'core:contact_us' %}">Contact Us</a></li>
-                        <li><a href="{% url 'core:about_us' %}">About Us</a></li>
-                        <li><a href="{% url 'core:blog' %}">Blog</a></li>
-                    </ul>
-                </div>
-<!-- Policies -->
-                <div class="footer-column">
-                    <h4>Policies</h4>
-                    <ul>
-                        <li><a href="{% url 'core:privacy_policy' %}">Privacy Notice</a></li>
-                        <li><a href="{% url 'core:return_policy' %}">Return Policy</a></li>
-                        <li><a href="{% url 'core:terms_conditions' %}">Terms and Conditions</a></li>
-                        <li><a href="{% url 'core:cookie_policy' %}">Cookie Policy</a></li>
-                    </ul>
-                </div>
-<!-- Newsletter -->
-                <div class="footer-column">
-                    <h4>Subscribe to Our Newsletter</h4>
-                    {% comment %} <form method="post" action="{% url 'core:newsletter_subscribe' %}"> {% endcomment %}
-                    <form method="post" action="#">   
-                    {% csrf_token %}
-                        <input type="email" name="email" placeholder="Email Address" required>
-                        <button type="submit">Subscribe</button>
-                    </form>
-<!-- Social Icons -->
-                        <div class="social-icons">
-                            <a href="#" aria-label="Instagram">
-                                <i class="fa-brands fa-instagram"></i>
-                            </a>
-                            <a href="#" aria-label="Facebook">
-                                <i class="fa-brands fa-facebook"></i>
-                            </a>
-                            <a href="#" aria-label="X">
-                            <i class="fa-brands fa-x-twitter"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-<!-- Footer Bottom -->
-            <div class="footer-bottom">
-                © 2025 | Kiddora | All Rights Reserved
-            </div>
-        </footer>
-    </body>
+    <div class="view-all">
+        <a href="#">view all</a>
+    </div>
+
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+    <div class="footer-container">
+
+        <div class="footer-logo">
+            <img src="{% static 'images/kiddora_logo.PNG' %}" alt="Kiddora Logo">
+        </div>
+
+        <div class="footer-column">
+            <h4>Info</h4>
+            <ul>
+                <li><a href="{% url 'core:contact_us' %}">Contact Us</a></li>
+                <li><a href="{% url 'core:about_us' %}">About Us</a></li>
+                <li><a href="{% url 'core:blog' %}">Blog</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h4>Policies</h4>
+            <ul>
+                <li><a href="{% url 'core:privacy_policy' %}">Privacy Notice</a></li>
+                <li><a href="{% url 'core:return_policy' %}">Return Policy</a></li>
+                <li><a href="{% url 'core:terms_conditions' %}">Terms & Conditions</a></li>
+                <li><a href="{% url 'core:cookie_policy' %}">Cookie Policy</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h4>Subscribe to Our Newsletter</h4>
+            <form method="post" action="#">
+                {% csrf_token %}
+                <input type="email" name="email" placeholder="Email Address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2025 | Kiddora | All Rights Reserved
+    </div>
+</footer>
+
+</body>
 </html>
