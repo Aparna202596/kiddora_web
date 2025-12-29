@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,282 +7,356 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-    /* ===============================
-    HOME PAGE STYLES
-    ================================ */
-    .home-container {
-        max-width: 2500px;
-        margin: auto;
-        padding: 20px;
-    }
+        /* GLOBAL RESET */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:"Segoe UI", Arial, sans-serif; background:#fff; color:#333; }
+        a { text-decoration:none; color:inherit; }
+        ul { list-style:none; }
 
-    .banner img {
-        width: 100%;
-        border-radius: 14px;
-        margin-bottom: 40px;
-    }
+        /* HEADER */
+        .site-header {
+            width: 100%;
+            background: #ffffff;
+            border-bottom: 1px solid #eaeaea;
+        }
+        .header-container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 14px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo img { height: 42px; }
 
-    .section-title {
-        text-align: center;
-        font-weight: 600;
-        margin: 40px 0 20px;
-    }
+        .main-nav ul {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .main-nav a {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .main-nav a:hover { color: #ff66cc; }
 
-    /* Categories */
-    .category-row {
-        display: flex;
-        gap: 20px;
-        overflow-x: auto;
-        padding-bottom: 10px;
-    }
+        .category-dropdown {
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
 
-    .category-card {
-        text-align: center;
-        min-width: 120px;
-        flex-shrink: 0;
-    }
+        /* AUTH BUTTONS */
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .login-btn {
+            padding: 7px 16px;
+            border: 1px solid #f06292;
+            color: #f06292;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .login-btn:hover {
+            background: #f06292;
+            color: #fff;
+        }
+        .signup-btn {
+            padding: 7px 18px;
+            background: #f06292;
+            color: #fff;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .signup-btn:hover {
+            background: #e91e63;
+        }
 
-    .category-card img {
-        width: 100%;
-        border-radius: 14px;
-    }
+        /* MAIN CONTENT */
+        .home-container {
+            max-width: 2500px;
+            margin: auto;
+            padding: 20px;
+        }
+        .banner img {
+            width: 70%;
+            border-radius: 14px;
+            margin-bottom: 40px;
 
-    .category-card p {
-        margin-top: 8px;
-        font-size: 14px;
-    }
+        }
+        .section-title {
+            text-align: center;
+            font-weight: 600;
+            margin: 40px 0 20px;
+        }
 
-    /* Tabs */
-    .tabs {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        margin-bottom: 20px;
-    }
+/* COMMON STYLES */
 
-    .tabs span {
-        padding: 6px 18px;
-        border-radius: 20px;
-        background: #eee;
-        font-size: 14px;
-        cursor: pointer;
-    }
+        .section-title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+            margin: 50px 0 25px;
+        }
 
-    .tabs span.active {
-        background: #f5a6d8;
-        color: #fff;
-    }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 25px;
+        }
 
-    /* Products */
-    .product-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        gap: 20px;
-    }
+        .card {
+            text-align: center;
+        }
 
-    .product-card {
-        position: relative;
-    }
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 14px;
+        }
 
-    .product-card img {
-        width: 100%;
-        border-radius: 14px;
-    }
+        .card h4 {
+            margin-top: 10px;
+            font-size: 15px;
+            font-weight: 500;
+        }
 
-    .wishlist {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 16px;
-        color: #ff5da2;
-    }
+/* SHOP BY CATEGORY */
+        .category-section {
+            max-width: 1200px;
+            margin: auto;
+        }
 
-    .product-info {
-        padding-top: 8px;
-    }
+/* TOP TRENDS */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
 
-    .product-info h4 {
-        font-size: 14px;
-        font-weight: 500;
-        margin: 0;
-    }
+        .tabs button {
+            padding: 8px 22px;
+            border-radius: 20px;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            color: #fff;
+        }
 
-    .price {
-        font-weight: 600;
-    }
+        .tab-boys { background: #4a90e2; }
+        .tab-girls { background: #f06292; }
+        .tab-kids { background: #ff9800; }
 
-    .rating {
-        color: #ffb400;
-        font-size: 13px;
-    }
+/* PRODUCTS */
+        .product-info {
+            margin-top: 8px;
+        }
 
-    .view-all {
-        text-align: center;
-        margin: 30px 0;
-    }
+        .price {
+            font-weight: 600;
+            margin-top: 4px;
+        }
 
-    .view-all a {
-        font-size: 14px;
-        color: #555;
-        text-decoration: none;
-    }
+        .cart-icon {
+            margin-top: 6px;
+            font-size: 18px;
+            color: #f06292;
+            cursor: pointer;
+        }
+
+/* RESPONSIVE */
+        @media (max-width: 576px) {
+            .card img {
+                height:200px;
+            }
+        }
+
+/* FOOTER */
+        .site-footer {
+            padding-top: 40px;
+            border-top: 1px solid #eee;
+            }
+        .footer-container {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            }
+        .footer-logo img { height: 50px; }
+        .footer-column h4 { margin-bottom: 15px; }
+        .footer-column ul li { margin-bottom: 8px; }
+        .footer-column button {
+            background: #f06292;
+            border: none;
+            color: #fff;
+            padding: 8px;
+            border-radius: 5px;
+            }
+        .footer-bottom {
+            text-align: center;
+            padding: 15px 0;
+            font-size: 13px;
+            margin-top: 30px;
+            }
+
+/* RESPONSIVE */
+            @media (max-width: 992px) {
+                .main-nav { display: none; }
+                .footer-container { grid-template-columns: repeat(2,1fr); }
+                }
+            @media (max-width: 576px) {
+                .footer-container { grid-template-columns: 1fr; }
+                }
     </style>
 </head>
 
 <body>
-
-<!-- ================= HEADER ================= -->
-<header class="site-header">
-    <div class="header-container">
-
-        <div class="logo">
-            <a href="{% url 'core:anonymous_user_home' %}">
-                <img src="{% static 'images/kiddora_logo.PNG' %}" alt="Kiddora Logo">
-            </a>
-        </div>
-
-        <nav class="main-nav">
-            <ul>
-                <li><a href="{% url 'core:anonymous_user_home' %}">Home</a></li>
-                <li><a href="{% url 'core:about_us' %}">About Us</a></li>
-                <li>
-                    <select onchange="if(this.value) window.location.href=this.value;">
-                        <option value="">Categories</option>
-                        {% for category in categories %}
-                            <option value="{% url 'products:category_list' category.slug %}">
-                                {{ category.category_name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </li>
-                <li><a href="#">Shop</a></li>
-                <li><a href="{% url 'core:contact_us' %}">Contact</a></li>
-            </ul>
-        </nav>
-
-        <div class="auth-buttons">
-            <a href="{% url 'accounts:login' %}" class="login-link">Login</a>
-            <a href="{% url 'accounts:signup' %}" class="signup-btn">Sign up</a>
-        </div>
-
-    </div>
-</header>
-
-<!-- ================= MAIN CONTENT ================= -->
-<div class="home-container">
-
-    <div class="banner">
-        <img src="{% static 'images/home/banner.PNG' %}" alt="New Year Sale">
-    </div>
-
-    <h3 class="section-title">SHOP BY CATEGORY</h3>
-    <div class="category-row">
-        <div class="category-card">
-            <img src="{% static 'images/home/newborn.PNG' %}">
-            <p>Newborn</p>
-        </div>
-        <div class="category-card">
-            <img src="{% static 'images/home/boys.PNG' %}">
-            <p>Boys</p>
-        </div>
-        <div class="category-card">
-            <img src="{% static 'images/home/girls.PNG' %}">
-            <p>Girls</p>
-        </div>
-        <div class="category-card">
-            <img src="{% static 'images/home/casuals.PNG' %}">
-            <p>Casuals</p>
-        </div>
-        <div class="category-card">
-            <img src="{% static 'images/home/ethnic.PNG' %}">
-            <p>Ethnic</p>
-        </div>
-    </div>
-
-    <h3 class="section-title">TOP TRENDS</h3>
-    <div class="tabs">
-        <span class="active">Girls</span>
-        <span>Boys</span>
-        <span>Kids</span>
-    </div>
-
-    <div class="product-grid">
-        {% for _ in "1234" %}
-        <div class="product-card">
-            <span class="wishlist">♥</span>
-            <img src="{% static 'images/products/p1.jpg' %}">
-            <div class="product-info">
-                <h4>Stylish Dress</h4>
-                <div class="price">₹ 999</div>
+<!-- HEADER -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="{% url 'core:anonymous_user_home' %}"><img src="{% static 'images/kiddora_logo.PNG' %}" alt="Kiddora Logo"></a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{% url 'core:anonymous_user_home' %}">Home</a></li>
+                    <li><a href="{% url 'core:about_us' %}">About Us</a></li>
+                    <li>
+                        <select class="category-dropdown"
+                                onchange="if(this.value) window.location.href=this.value;">
+                            <option value="">Categories</option>
+                            {% for category in header_categories %}
+                                <option value="{% url 'core:category_products' category.slug %}">
+                                    {{ category.category_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </li>
+                    <li><a href="#">Shop</a></li>
+                    <li><a href="{% url 'core:contact_us' %}">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <a href="{% url 'accounts:login' %}" class="login-btn">Login</a>
+                <a href="{% url 'accounts:signup' %}" class="signup-btn">Sign Up</a>
             </div>
         </div>
-        {% endfor %}
-    </div>
+    </header>
+<!-- MAIN CONTENT -->
+    <div class="home-container">
+        <div class="banner"><img src="{% static 'images/home/banner.PNG' %}" alt="New Year Sale"></div>
+        
+        <section class="category-section">
+            <h3 class="section-title"><strong>SHOP BY CATEGORY</strong></h3>
+            <div class="card-grid">
+                <div class="card"><img src="{% static 'images/home/newborn.jpeg' %}"><h4>Newborn</h4></div>
+                <div class="card"><img src="{% static 'images/home/boys.jpeg' %}"><h4>Boys</h4></div>
+                <div class="card"><img src="{% static 'images/home/girls.jpeg' %}"><h4>Girls</h4></div>
+                <div class="card"><img src="{% static 'images/home/casuals.jpeg' %}"><h4>Casuals</h4></div>
+                <div class="card"><img src="{% static 'images/home/ethnic.jpeg' %}"><h4>Ethnic</h4></div>
+            </div>
+        </section>
+<!--  TOP TRENDS -->
+        <section class="category-section">
+            <h3 class="section-title"><strong>TOP TRENDS</strong></h3>
+            <div class="tabs">
+                <button class="tab-girls">Girls</button>
+                <button class="tab-boys">Boys</button>
+                <button class="tab-kids">Kids</button>
+            </div>
+            <div class="card-grid">
+                <div class="card"><img src="{% static 'images/home/boys_cord_set_01.jpeg' %}"><h4>Boys Cord Set</h4></div>
+                <div class="card"><img src="{% static 'images/home/boys_shirt_shorts_01.jpeg' %}"><h4>Shirt & Shorts</h4></div>
+                <div class="card"><img src="{% static 'images/home/romber_01.jpeg' %}"><h4>Rompers</h4></div>
+                <div class="card"><img src="{% static 'images/home/boys_casual_set_01.jpeg' %}"><h4>Casual Set</h4></div>
+                <div class="card"><img src="{% static 'images/home/winter.jpeg' %}"><h4>Sweaters</h4></div>
+            </div>
+        </section>
+<!-- NEW ARRIVALS -->
+        <section class="category-section">
+            <h3 class="section-title"><strong>NEW ARRIVALS</strong></h3>
+            <div class="card-grid">
 
-    <h3 class="section-title">NEW ARRIVALS</h3>
+                <div class="card"><img src="{% static 'images/home/boys_shirt_shorts_02.jpeg' %}">
+                    <div class="product-info">
+                        <h4>Boys Shirt & Shorts</h4><div class="price">₹ 1,299</div>
+                        <div class="cart-icon"><i class="fa fa-shopping-cart"></i></div>
+                    </div>
+                </div>
 
-    <div class="product-grid">
-        {% for _ in "123456" %}
-        <div class="product-card">
-            <span class="wishlist">♥</span>
-            <img src="{% static 'images/products/p2.jpg' %}">
-            <div class="product-info">
-                <h4>Kids Cotton Wear</h4>
-                <div class="price">₹ 1,299</div>
-                <div class="rating">★★★★★</div>
+                <div class="card"><img src="{% static 'images/home/girls_cord_set_01.jpeg' %}">
+                    <div class="product-info">
+                        <h4>Girls Cord Set</h4><div class="price">₹ 999</div>
+                        <div class="cart-icon"><i class="fa fa-shopping-cart"></i></div>
+                    </div>
+                </div>
+
+                <div class="card"><img src="{% static 'images/gcas9.jpeg' %}">
+                    <div class="product-info">
+                        <h4>Casual Outfit</h4><div class="price">₹ 1,199</div>
+                        <div class="cart-icon"><i class="fa fa-shopping-cart"></i></div>
+                    </div>
+                </div>
+
+                <div class="card"><img src="{% static 'images/gcas5.jpeg' %}">
+                    <div class="product-info">
+                        <h4>Girls Casual outfit</h4><div class="price">₹ 899</div>
+                        <div class="cart-icon"><i class="fa fa-shopping-cart"></i></div>
+                    </div>
+
+                <div class="card"><img src="{% static 'images/gparty11.jpeg' %}">
+                    <div class="product-info">
+                        <h4>Girls Party Wear</h4><div class="price">₹ 899</div>
+                        <div class="cart-icon"><i class="fa fa-shopping-cart"></i></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% comment %} <div class="view-all"><a href="#">view all</a></div></div> {% endcomment %}
+<!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-logo"><img src="{% static 'images/kiddora_logo.PNG' %}" alt="Kiddora Logo"></div>
+            <div class="footer-column">
+                <h4>Info</h4>
+                <ul>
+                    <li><a href="{% url 'core:contact_us' %}">Contact Us</a></li>
+                    <li><a href="{% url 'core:about_us' %}">About Us</a></li>
+                    <li><a href="{% url 'core:blog' %}">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Policies</h4>
+                <ul>
+                    <li><a href="{% url 'core:privacy_policy' %}">Privacy Notice</a></li>
+                    <li><a href="{% url 'core:return_policy' %}">Return Policy</a></li>
+                    <li><a href="{% url 'core:terms_conditions' %}">Terms and Conditions</a></li>
+                    <li><a href="{% url 'core:cookie_policy' %}">Cookie Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Subscribe to Our Newsletter</h4>
+                <form method="post" action="#">
+                    {% csrf_token %}
+                    <input type="email" name="email" placeholder="Email Address" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+                <div class="social-icons">
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
             </div>
         </div>
-        {% endfor %}
-    </div>
-
-    <div class="view-all">
-        <a href="#">view all</a>
-    </div>
-
-</div>
-
-<!-- ================= FOOTER ================= -->
-<footer class="site-footer">
-    <div class="footer-container">
-
-        <div class="footer-logo">
-            <img src="{% static 'images/kiddora_logo.PNG' %}" alt="Kiddora Logo">
-        </div>
-
-        <div class="footer-column">
-            <h4>Info</h4>
-            <ul>
-                <li><a href="{% url 'core:contact_us' %}">Contact Us</a></li>
-                <li><a href="{% url 'core:about_us' %}">About Us</a></li>
-                <li><a href="{% url 'core:blog' %}">Blog</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-column">
-            <h4>Policies</h4>
-            <ul>
-                <li><a href="{% url 'core:privacy_policy' %}">Privacy Notice</a></li>
-                <li><a href="{% url 'core:return_policy' %}">Return Policy</a></li>
-                <li><a href="{% url 'core:terms_conditions' %}">Terms & Conditions</a></li>
-                <li><a href="{% url 'core:cookie_policy' %}">Cookie Policy</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-column">
-            <h4>Subscribe to Our Newsletter</h4>
-            <form method="post" action="#">
-                {% csrf_token %}
-                <input type="email" name="email" placeholder="Email Address" required>
-                <button type="submit">Subscribe</button>
-            </form>
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-        © 2025 | Kiddora | All Rights Reserved
-    </div>
-</footer>
-
+        <div class="footer-bottom">© 2025 | Kiddora | All Rights Reserved</div>
+    </footer>
 </body>
 </html>
