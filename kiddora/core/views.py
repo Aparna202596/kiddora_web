@@ -17,7 +17,7 @@ from products.models import Category, Subcategory, Product
 
 User = get_user_model()
 
-def notlogged_home_view(request):
+def notlogged_home(request):
     categories = Category.objects.filter(is_active=True)
     products = Product.objects.filter(is_active=True).order_by('-id')[:8]
 
@@ -47,8 +47,8 @@ def cookie_policy_view(request):
 def blog_view(request):
     return render(request, 'head_foot/blog.html')
 
-@user_login_required
-def home_view(request):
+# @user_login_required
+def home(request):
     categories = Category.objects.filter(is_active=True)
     products = Product.objects.filter(is_active=True).order_by('-id')[:8]
 

@@ -9,7 +9,8 @@
 
 body {
     font-family: "Segoe UI", Arial, sans-serif;
-    background-color: #000; /* dark backdrop like Figma */
+    background-color: #f4caf6;
+    /* dark backdrop like Figma */
 }
 
 /* ===============================
@@ -177,9 +178,7 @@ body {
     color: #e8a1c6;
 }
 
-/* ===============================
-   RIGHT IMAGE SECTION
-================================ */
+/* RIGHT IMAGE SECTION */
 .auth-right {
     flex: 1;
     display: flex;
@@ -193,9 +192,7 @@ body {
     border-radius: 12px;
 }
 
-/* ===============================
-   RESPONSIVE
-================================ */
+/* RESPONSIVE */
 @media (max-width: 900px) {
     .auth-card {
         width: 90%;

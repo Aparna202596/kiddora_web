@@ -20,43 +20,56 @@ def signup_view(request):
         full_name = request.POST.get('full_name')
         email = request.POST.get('email')
         phone = request.POST.get('phone')
-        username = request.POST.get('username')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
-# Basic validation
+
+        # Basic validation
         if password != confirm_password:
             messages.error(request, "Passwords do not match")
             return redirect('accounts:signup')
-# Check for existing username/email/phone
-        if User.objects.filter(email=email).exists():
+
+        if CustomUser.objects.filter(email=email).exists():
             messages.error(request, "Email already exists")
             return redirect('accounts:signup')
-# Check for existing username
-        if phone and User.objects.filter(phone=phone).exists():
+
+        if phone and CustomUser.objects.filter(phone=phone).exists():
             messages.error(request, "Phone number already exists")
             return redirect('accounts:signup')
-# Create user
+
         otp = generate_otp()
-        user = User.objects.create(
-            username=username,
-            full_name=full_name,
+
+        # ✅ CREATE USER ONLY ONCE
+        user = CustomUser.objects.create_user(
+            username=email,           # REQUIRED
             email=email,
+            password=password,        # create_user hashes it
+            first_name=full_name,
             phone=phone,
-            password=make_password(password),
+            role="customer",
             is_active=False,
             email_verified=False,
             otp=otp,
-            otp_created_at=timezone.now())
-# Send verification email with OTP
+            otp_created_at=timezone.now()
+        )
+
+        # Send OTP email
         send_mail(
             subject="Your OTP for Kiddora Signup",
-            message=f"Hi {full_name},\n\nYour OTP for email verification is: {otp} valid for 10 minutes.\n\nThank you for signing up!",
+            message=(
+                f"Hi {full_name},\n\n"
+                f"Your OTP for email verification is: {otp}. "
+                f"It is valid for 10 minutes.\n\n"
+                f"Thank you for signing up!"
+            ),
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[email],
-            fail_silently=False)
+            fail_silently=False
+        )
+
         request.session['otp_user_id'] = user.id
         messages.success(request, "Account created. Please verify your email.")
         return redirect('accounts:login')
+
     return render(request, 'accounts/signup.html')
 
 # Login View, with email/username and password
@@ -78,7 +91,7 @@ def login_view(request):
             messages.error(request, "Please verify your email before login")
             return redirect('accounts:login')
         login(request, user)  # SESSION CREATED
-        return redirect('core:home_view')
+        return redirect('core:home')
     return render(request, 'accounts/login.html')
 
 # Social Login Callback View, to handle post-login actions, user creation if needed
@@ -99,7 +112,7 @@ def social_login_callback(request):
             email_verified=True)  # Mark as verified since social login is trusted
     login(request, user)   # Log the user in
     messages.success(request, f"Welcome, {user.full_name}!")
-    return redirect('products:home')
+    return redirect('core:home')
 
 # OTP Verification View, for verifying email after signup
 def verify_otp_view(request):
