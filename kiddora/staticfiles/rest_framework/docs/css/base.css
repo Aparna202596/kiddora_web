@@ -1,21 +1,24 @@
 h1 {
-    font-size: 45px;
+  font-size: 45px;
 }
 
 .intro-code {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 pre.highlight code * {
-  white-space: nowrap;    /* this sets all children inside to nowrap */
+  white-space: nowrap;
+  /* this sets all children inside to nowrap */
 }
 
 pre.highlight {
-  overflow-x: auto;       /* this sets the scrolling in x */
+  overflow-x: auto;
+  /* this sets the scrolling in x */
 }
 
 pre.highlight code {
-  white-space: pre;       /* forces <code> to respect <pre> formatting */
+  white-space: pre;
+  /* forces <code> to respect <pre> formatting */
 }
 
 .main-container {
@@ -42,16 +45,16 @@ pre.highlight code {
 }
 
 .sidebar .brand {
-    background-color: #23282e;
-    display: block;
-    text-align: center;
-    padding: 25px 0;
-    margin-top: 0;
-    margin-bottom: 0;
+  background-color: #23282e;
+  display: block;
+  text-align: center;
+  padding: 25px 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .sidebar .brand a {
-    color: #FFF;
+  color: #FFF;
 }
 
 .sidebar .brand a:hover,
@@ -178,43 +181,43 @@ body {
   padding: 0px;
 }
 
-.coredocs-section-title {
-    margin-top: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid lightgrey;
+.storedocs-section-title {
+  margin-top: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid lightgrey;
 }
 
-.coredocs-link-title a,
-.coredocs-section-title a {
+.storedocs-link-title a,
+.storedocs-section-title a {
   display: none;
 }
 
-.coredocs-link-title a,
-.coredocs-section-title a {
+.storedocs-link-title a,
+.storedocs-section-title a {
   text-decoration: none;
 }
 
-.coredocs-link-title:hover a,
-.coredocs-section-title:hover a {
+.storedocs-link-title:hover a,
+.storedocs-section-title:hover a {
   display: inline;
   font-size: 20px;
 }
 
-.coredocs-section-title:last-child {
-    margin-top: 0;
+.storedocs-section-title:last-child {
+  margin-top: 0;
 }
 
 
 /* @group Language Switcher */
 
 .sidebar .menu-list.menu-list-bottom {
-    margin-bottom: 0;
-    position: fixed;
-    width: inherit;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    border-top: 1px solid #23282e;
+  margin-bottom: 0;
+  position: fixed;
+  width: inherit;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-top: 1px solid #23282e;
 }
 
 .sidebar .menu-list-bottom li span {
@@ -229,15 +232,15 @@ body {
 /* @group Docs Content */
 
 .docs-content .meta .label {
-    vertical-align: middle;
-    font-size: 14px;
-    font-weight: normal;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: normal;
 }
 
 .docs-content .meta code {
-    vertical-align: middle;
-    padding: .2em .6em .3em;
-    font-size: 14px;
+  vertical-align: middle;
+  padding: .2em .6em .3em;
+  font-size: 14px;
 }
 
 .docs-content .btn {
@@ -296,15 +299,16 @@ body {
   .sidebar .menu-list .menu-content {
     display: block;
   }
+
   #main {
-    width:calc(100% - 225px);
+    width: calc(100% - 225px);
     float: right;
   }
 }
 
 @media (min-width: 992px) {
   .modal-lg {
-      width: 980px;
+    width: 980px;
   }
 }
 
@@ -323,15 +327,15 @@ body {
 }
 
 .api-modal .modal-body .meta .label {
-    vertical-align: middle;
-    font-size: 14px;
-    font-weight: normal;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: normal;
 }
 
 .api-modal .modal-body .meta code {
-    vertical-align: middle;
-    padding: .2em .6em .3em;
-    font-size: 14px;
+  vertical-align: middle;
+  padding: .2em .6em .3em;
+  font-size: 14px;
 }
 
 .api-modal .modal-content .toggle-view {
@@ -345,15 +349,15 @@ body {
 }
 
 .highlight {
-    background-color: #f7f7f9
+  background-color: #f7f7f9
 }
 
 .checkbox label.control-label {
-    font-weight: bold
+  font-weight: bold
 }
 
 @media (min-width: 768px) {
-    .navbar-nav.navbar-right:last-child {
-        margin-right: 0 !important;
-    }
+  .navbar-nav.navbar-right:last-child {
+    margin-right: 0 !important;
+  }
 }

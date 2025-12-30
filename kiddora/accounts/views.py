@@ -1,11 +1,11 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from core.decorators import user_login_required
+from store.decorators import user_login_required
 from django.contrib.auth.decorators import login_required
 from allauth.socialaccount.models import SocialAccount
 from django.contrib import messages
 from django.contrib.auth import get_user_model,login,authenticate,update_session_auth_hash
 from django.contrib.auth.hashers import make_password
-from django.core.mail import send_mail
+from django.store.mail import send_mail
 from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
@@ -91,7 +91,7 @@ def login_view(request):
             messages.error(request, "Please verify your email before login")
             return redirect('accounts:login')
         login(request, user)  # SESSION CREATED
-        return redirect('core:home')
+        return redirect('store:home')
     return render(request, 'accounts/login.html')
 
 # Social Login Callback View, to handle post-login actions, user creation if needed
@@ -112,7 +112,7 @@ def social_login_callback(request):
             email_verified=True)  # Mark as verified since social login is trusted
     login(request, user)   # Log the user in
     messages.success(request, f"Welcome, {user.full_name}!")
-    return redirect('core:home')
+    return redirect('store:home')
 
 # OTP Verification View, for verifying email after signup
 def verify_otp_view(request):

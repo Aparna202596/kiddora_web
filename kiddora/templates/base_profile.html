@@ -82,27 +82,27 @@
         <div class="header-container">
 <!-- Logo -->
             <div class="logo">
-                <a href="{% url 'core:home' %}">
+                <a href="{% url 'store:home' %}">
                     <img src="{% static 'images/kiddora_logo.PNG' %}" alt="Kiddora Logo">
                 </a>
             </div>
 <!-- Navigation -->
             <nav class="main-nav">
                 <ul>
-                    <li><a href="{% url 'core:home' %}">Home</a></li>
-                    <li><a href="{% url 'core:about_us' %}">About Us</a></li>
+                    <li><a href="{% url 'store:home' %}">Home</a></li>
+                    <li><a href="{% url 'store:about_us' %}">About Us</a></li>
                     <li>
                         <select class="category-dropdown" onchange="if(this.value) window.location.href=this.value;">
                             <option value="">Categories</option>
                             {% for category in header_categories %}
-                                <option value="{% url 'core:category_products' category.slug %}">
+                                <option value="{% url 'store:category_products' category.slug %}">
                                     {{ category.category_name }}
                                 </option>
                             {% endfor %}
                         </select>
                     </li>
                     <li><a href="#">Shop</a></li>
-                    <li><a href="{% url 'core:contact_us' %}">Contact</a></li>
+                    <li><a href="{% url 'store:contact_us' %}">Contact</a></li>
                 </ul>
             </nav>
 <!-- Actions -->
@@ -139,18 +139,18 @@
             <div class="footer-column">
                 <h4>Info</h4>
                 <ul>
-                    <li><a href="{% url 'core:contact_us' %}">Contact Us</a></li>
-                    <li><a href="{% url 'core:about_us' %}">About Us</a></li>
-                    <li><a href="{% url 'core:blog' %}">Blog</a></li>
+                    <li><a href="{% url 'store:contact_us' %}">Contact Us</a></li>
+                    <li><a href="{% url 'store:about_us' %}">About Us</a></li>
+                    <li><a href="{% url 'store:blog' %}">Blog</a></li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h4>Policies</h4>
                 <ul>
-                    <li><a href="{% url 'core:privacy_policy' %}">Privacy Notice</a></li>
-                    <li><a href="{% url 'core:return_policy' %}">Return Policy</a></li>
-                    <li><a href="{% url 'core:terms_conditions' %}">Terms and Conditions</a></li>
-                    <li><a href="{% url 'core:cookie_policy' %}">Cookie Policy</a></li>
+                    <li><a href="{% url 'store:privacy_policy' %}">Privacy Notice</a></li>
+                    <li><a href="{% url 'store:return_policy' %}">Return Policy</a></li>
+                    <li><a href="{% url 'store:terms_conditions' %}">Terms and Conditions</a></li>
+                    <li><a href="{% url 'store:cookie_policy' %}">Cookie Policy</a></li>
                 </ul>
             </div>
             <div class="footer-column">

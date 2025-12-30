@@ -1,8 +1,8 @@
 var responseDisplay = 'data'
-var coreapi = window.coreapi
+var storeapi = window.storeapi
 var schema = window.schema
 
-function normalizeKeys (arr) {
+function normalizeKeys(arr) {
   var _normarr = [];
   for (var i = 0; i < arr.length; i++) {
     _normarr = _normarr.concat(arr[i].split(' > '));
@@ -10,7 +10,7 @@ function normalizeKeys (arr) {
   return _normarr;
 }
 
-function normalizeHTTPHeader (str) {
+function normalizeHTTPHeader(str) {
   // Capitalize HTTP headers for display.
   return (str.charAt(0).toUpperCase() + str.substring(1))
     .replace(/-(.)/g, function ($1) {
@@ -27,7 +27,7 @@ function normalizeHTTPHeader (str) {
     })
 }
 
-function formEntries (form) {
+function formEntries(form) {
   // Polyfill for new FormData(form).entries()
   var formData = new FormData(form)
   if (formData.entries !== undefined) {
@@ -150,7 +150,7 @@ $(function () {
       }
     })
 
-    function requestCallback (request) {
+    function requestCallback(request) {
       // Fill in the "GET /foo/" display.
       var parser = document.createElement('a')
       parser.href = request.url
@@ -161,7 +161,7 @@ $(function () {
       $requestUrl.text(path)
     }
 
-    function responseCallback (response, responseText) {
+    function responseCallback(response, responseText) {
       // Display the 'Data'/'Raw' control.
       $toggleView.removeClass('hide')
 
@@ -195,25 +195,25 @@ $(function () {
     // Setup authentication options.
     if (window.auth && window.auth.type === 'token') {
       // Header authentication
-      options.auth = new coreapi.auth.TokenAuthentication({
+      options.auth = new storeapi.auth.TokenAuthentication({
         scheme: window.auth.scheme,
         token: window.auth.token
       })
     } else if (window.auth && window.auth.type === 'basic') {
       // Basic authentication
-      options.auth = new coreapi.auth.BasicAuthentication({
+      options.auth = new storeapi.auth.BasicAuthentication({
         username: window.auth.username,
         password: window.auth.password
       })
     } else if (window.auth && window.auth.type === 'session') {
       // Session authentication
-      options.auth = new coreapi.auth.SessionAuthentication({
+      options.auth = new storeapi.auth.SessionAuthentication({
         csrfCookieName: 'csrftoken',
         csrfHeaderName: 'X-CSRFToken'
       })
     }
 
-    var client = new coreapi.Client(options)
+    var client = new storeapi.Client(options)
     client.action(schema, key, params).then(function (data) {
       var response = JSON.stringify(data, null, 2)
       $requestAwaiting.addClass('hide')

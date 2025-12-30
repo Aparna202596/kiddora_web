@@ -31,9 +31,9 @@ urlpatterns = [
 
     path('accounts/', include('accounts.urls')),
     path('products/', include('products.urls')),
-    path('core/', include('core.urls')),
+    path('store/', include('store.urls')),
     # Root URL → anonymous home page
-    path('', lambda request: redirect('core:anonymous_user_home'), name='root_redirect'),
+    path('', lambda request: redirect('store:anonymous_user_home'), name='root_redirect'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -4,14 +4,14 @@ from django.db.models import Sum, Count
 from django.utils.timezone import now
 from datetime import timedelta
 from django.contrib.auth import get_user_model
-from django.core.paginator import Paginator
+from django.store.paginator import Paginator
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
-from core.decorators import admin_required
+from store.decorators import admin_required
 from accounts.models import CustomUser
-from core.decorators import user_login_required
+from store.decorators import user_login_required
 from orders.models import Order, OrderItem, Payment
 from products.models import Category, Subcategory, Product
 
@@ -21,7 +21,7 @@ def notlogged_home(request):
     categories = Category.objects.filter(is_active=True)
     products = Product.objects.filter(is_active=True).order_by('-id')[:8]
 
-    return render(request, 'core/notlogged_home.html', {
+    return render(request, 'store/notlogged_home.html', {
         'categories': categories,
         'products': products
     })
@@ -52,7 +52,7 @@ def home(request):
     categories = Category.objects.filter(is_active=True)
     products = Product.objects.filter(is_active=True).order_by('-id')[:8]
 
-    return render(request, 'core/home.html', {
+    return render(request, 'store/home.html', {
         'categories': categories,
         'products': products
     })

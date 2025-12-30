@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 
-app_name = 'core'
+app_name = 'store'
 
 urlpatterns = [
     path('', views.notlogged_home, name='anonymous_user_home'),
